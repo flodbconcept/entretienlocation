@@ -1,0 +1,16 @@
+📸 PHOTOS — État attendu par pièce
+====================================
+
+Déposez vos photos ici avec exactement ces noms de fichiers :
+
+  entree.jpg      → Entrée & couloir
+  cuisine.jpg     → Cuisine
+  sdb.jpg         → Salle de bain & WC
+  chambre.jpg     → Chambre(s)
+  terrasse.jpg    → Terrasses & bar extérieur
+  salon.jpg       → Salon & pièces de vie
+
+Formats acceptés : .jpg  .jpeg  .png  .webp
+
+Ces photos apparaîtront dans chaque carte de pièce comme référence
+visuelle pour les agents de ménage ("voilà à quoi ça doit ressembler").

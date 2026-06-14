@@ -1,0 +1,17 @@
+🎬 VIDÉOS — Tutoriels par tâche
+=================================
+
+Déposez vos vidéos ici avec exactement ces noms de fichiers :
+
+  plaques.mp4       → "Nettoyer plaques, four et micro-ondes"
+  lit.mp4           → "Faire le lit comme à l'hôtel"
+  transats.mp4      → "Remettre les transats en place"
+  wifi.mp4          → "Tester TV + Wi-Fi"
+
+Formats acceptés : .mp4  .mov  .webm
+
+⚠️  Les vidéos .mov (iPhone) fonctionnent mais .mp4 est recommandé.
+⚠️  Taille max recommandée : 50 Mo par vidéo (sinon lent à charger).
+
+Pour convertir une vidéo .mov en .mp4 gratuitement :
+→ https://cloudconvert.com/mov-to-mp4

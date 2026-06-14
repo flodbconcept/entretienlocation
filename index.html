@@ -35,14 +35,15 @@
 
   /* ---------- Header ---------- */
   header{
-    background:var(--moss);color:#f4efe6;padding:calc(26px + env(safe-area-inset-top,0px)) 20px 20px;position:relative;overflow:hidden;
+    background:var(--moss);color:#f4efe6;
+    padding:calc(26px + env(safe-area-inset-top,0px)) 20px 20px;
+    position:relative;overflow:hidden;
   }
   header::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
     border:14px solid rgba(255,255,255,.06);border-radius:50%}
   .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.7;font-weight:700}
   header h1{font-size:30px;margin-top:4px;color:#fff}
   .home-name{font-style:italic;font-weight:400;opacity:.85;font-size:15px;margin-top:6px;font-family:'Fraunces',serif}
-
   .progress-wrap{margin-top:18px}
   .progress-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:7px}
   .progress-top b{font-family:'Fraunces',serif;font-size:18px}
@@ -76,12 +77,19 @@
   .mini-bar > i{display:block;height:100%;background:var(--moss);width:0;transition:width .4s}
   .chev{transition:.3s;color:var(--muted);font-size:14px}
   .room.open .chev{transform:rotate(90deg)}
-  .room-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
-  .room.open .room-body{max-height:3000px}
+  .room-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+  .room.open .room-body{max-height:4000px}
   .room-inner{padding:4px 16px 16px}
 
+  /* photo pièce */
+  .room-photo{width:100%;height:180px;object-fit:cover;display:block;cursor:pointer}
+  .room-photo-wrap{position:relative}
+  .room-photo-wrap .photo-label{position:absolute;bottom:8px;right:10px;
+    background:rgba(31,27,22,.55);color:#fff;font-size:11px;font-weight:700;
+    padding:3px 9px;border-radius:20px;backdrop-filter:blur(4px)}
+
   /* bouton tout cocher */
-  .room-actions{display:flex;justify-content:flex-end;padding:0 0 10px;gap:8px}
+  .room-actions{display:flex;justify-content:flex-end;padding:8px 0 6px;gap:8px}
   .btn-sm{border:none;background:var(--moss-soft);color:var(--moss);font-family:'DM Sans';font-weight:700;
     font-size:12px;padding:6px 12px;border-radius:20px;cursor:pointer}
   .btn-sm:active{background:var(--moss);color:#fff}
@@ -106,14 +114,13 @@
   .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}
   .card h2{font-size:21px;margin-bottom:4px}
   .card .lead{font-size:13.5px;color:var(--muted);margin-bottom:14px}
-  .section-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:700;margin:22px 4px 2px}
 
   /* inventory */
   .inv-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px dashed var(--line)}
   .inv-row:first-child{border-top:none}
   .inv-row .name{flex:1;font-size:14.5px}
   .inv-row .name small{display:block;color:var(--muted);font-size:12px}
-  .stepper{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .stepper button{border:none;background:var(--moss-soft);width:34px;height:34px;font-size:18px;cursor:pointer;color:var(--moss);font-weight:700}
   .stepper button:active{background:var(--moss);color:#fff}
   .stepper span{min-width:36px;text-align:center;font-weight:700;font-size:15px}
@@ -148,17 +155,22 @@
   .reset{display:block;margin:26px auto 10px;background:none;border:1px solid var(--line);color:var(--muted);
     padding:11px 20px;border-radius:30px;font-family:'DM Sans';font-weight:700;font-size:13px;cursor:pointer}
 
-  /* video modal */
-  .modal{position:fixed;inset:0;background:rgba(31,27,22,.7);display:none;place-items:center;z-index:100;padding:20px}
+  /* ---------- Modale (photo + vidéo) ---------- */
+  .modal{position:fixed;inset:0;background:rgba(31,27,22,.8);display:none;place-items:center;z-index:100;padding:16px}
   .modal.open{display:grid}
-  .modal-box{background:var(--paper);border-radius:18px;max-width:560px;width:100%;overflow:hidden}
-  .modal-box .vid-wrap{position:relative;aspect-ratio:16/9;background:#000}
-  .modal-box .vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-  .modal-box .vid-placeholder{aspect-ratio:16/9;background:#000;display:grid;place-items:center;color:#fff;text-align:center;padding:20px}
-  .modal-box .vid-placeholder .play{width:60px;height:60px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;font-size:24px;margin:0 auto 12px}
-  .modal-foot{padding:16px;display:flex;justify-content:space-between;align-items:center}
+  .modal-box{background:var(--paper);border-radius:18px;max-width:580px;width:100%;overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+  .modal-media{flex:1;overflow:hidden;background:#000}
+  .modal-media img{width:100%;height:100%;object-fit:contain;display:block;max-height:70vh}
+  .modal-media video{width:100%;display:block;max-height:70vh;background:#000}
+  .modal-media .vid-wrap{position:relative;aspect-ratio:16/9}
+  .modal-media .vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+  .modal-media .placeholder{aspect-ratio:16/9;display:grid;place-items:center;color:#fff;text-align:center;padding:20px}
+  .modal-media .placeholder .play{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,.5);display:grid;place-items:center;font-size:24px;margin:0 auto 12px}
+  .modal-foot{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+  .modal-foot .modal-title{font-weight:700;font-size:15px;font-family:'Fraunces',serif}
 
   .empty{text-align:center;color:var(--muted);font-size:13.5px;padding:24px 10px;font-style:italic}
+
   .saving{position:fixed;bottom:calc(16px + var(--safe-bottom));left:50%;transform:translateX(-50%);
     background:var(--ink);color:#fff;font-size:12px;padding:7px 14px;border-radius:20px;
     opacity:0;transition:.3s;z-index:60;pointer-events:none;white-space:nowrap}
@@ -166,15 +178,14 @@
 
   /* install banner */
   .install-banner{background:var(--moss);color:#fff;padding:12px 16px;display:flex;align-items:center;
-    gap:12px;font-size:13px;font-weight:700;cursor:pointer}
+    gap:12px;font-size:13px;font-weight:700}
   .install-banner span{flex:1}
   .install-banner button{background:#fff;color:var(--moss);border:none;border-radius:8px;padding:6px 12px;font-weight:700;font-size:12px;cursor:pointer}
-  .install-banner .close-banner{background:none;color:rgba(255,255,255,.7);font-size:18px;padding:0 4px}
+  .install-banner .close-banner{background:none;color:rgba(255,255,255,.7);font-size:18px;padding:0 4px;cursor:pointer}
 </style>
 </head>
 <body>
 
-<!-- banner install PWA (affiché dynamiquement) -->
 <div class="install-banner" id="installBanner" style="display:none">
   <span>📲 Installer l'app sur votre téléphone</span>
   <button id="installBtn">Installer</button>
@@ -200,13 +211,11 @@
 </nav>
 
 <main>
-  <!-- MENAGE -->
   <section class="panel active" id="menage">
     <div id="lastStamp"></div>
     <div id="rooms"></div>
   </section>
 
-  <!-- LINGE -->
   <section class="panel" id="linge">
     <div class="card">
       <h2>Comptage du linge</h2>
@@ -215,7 +224,6 @@
     </div>
   </section>
 
-  <!-- STOCK -->
   <section class="panel" id="stock">
     <div class="card">
       <h2>Inventaire & réappro</h2>
@@ -225,7 +233,6 @@
     </div>
   </section>
 
-  <!-- PROBLEMES -->
   <section class="panel" id="probleme">
     <div class="card">
       <h2>Signaler un problème</h2>
@@ -237,7 +244,6 @@
     </div>
   </section>
 
-  <!-- FINAL -->
   <section class="panel" id="final">
     <div class="card">
       <h2>Avant de fermer</h2>
@@ -249,12 +255,12 @@
   <button class="reset" onclick="resetAll()">↺ Réinitialiser pour le prochain voyageur</button>
 </main>
 
-<!-- video modal -->
+<!-- Modale universelle photo + vidéo -->
 <div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
-    <div id="vidContent"></div>
+    <div class="modal-media" id="modalMedia"></div>
     <div class="modal-foot">
-      <span style="font-size:13px;color:var(--muted)" id="vidLabel">Tuto vidéo</span>
+      <span class="modal-title" id="modalTitle"></span>
       <button class="btn ghost" onclick="closeModal()">Fermer</button>
     </div>
   </div>
@@ -265,25 +271,41 @@
 <script>
 /* ============================================================
    DONNÉES — modifiez librement cette section
+   ============================================================
+
+   Pour chaque pièce :
+   - photo : nom du fichier dans le dossier /photos/  (ex: "cuisine.jpg")
+
+   Pour chaque tâche avec une vidéo :
+   - video   : titre affiché dans la modale
+   - videoUrl: nom du fichier dans /videos/ OU lien YouTube complet
+               ex local   : "plaques.mp4"
+               ex YouTube : "https://youtu.be/XXXXXXX"
    ============================================================ */
 
 const ROOMS = [
-  {id:"entree", icon:"🚪", name:"Entrée & couloir", tasks:[
+  {id:"entree", icon:"🚪", name:"Entrée & couloir",
+   photo:"entree.jpg",
+   tasks:[
     {t:"Récupérer les clés / vérifier le boîtier à code", cle:true},
     {t:"Vider et désinfecter la poubelle"},
     {t:"Aspirateur puis serpillière"},
     {t:"Dépoussiérer surfaces, interrupteurs, poignées"},
   ]},
-  {id:"cuisine", icon:"🍳", name:"Cuisine", tasks:[
+  {id:"cuisine", icon:"🍳", name:"Cuisine",
+   photo:"cuisine.jpg",
+   tasks:[
     {t:"Vider le frigo, jeter les restes, nettoyer l'intérieur"},
-    {t:"Nettoyer plaques, four et micro-ondes", video:"Dégraisser les plaques"},
+    {t:"Nettoyer plaques, four et micro-ondes", video:"Dégraisser les plaques", videoUrl:"plaques.mp4"},
     {t:"Laver, sécher et ranger toute la vaisselle"},
     {t:"Désinfecter plans de travail et évier"},
     {t:"Vérifier consommables (café, sel, huile, éponges)"},
     {t:"Lancer / vider le lave-vaisselle"},
     {t:"Sortir les poubelles et remettre un sac propre"},
   ]},
-  {id:"sdb", icon:"🚿", name:"Salle de bain & WC", tasks:[
+  {id:"sdb", icon:"🚿", name:"Salle de bain & WC",
+   photo:"sdb.jpg",
+   tasks:[
     {t:"Désinfecter WC (cuvette, abattant, sol autour)"},
     {t:"Nettoyer douche/baignoire — anti-calcaire"},
     {t:"Lavabo, robinetterie et miroir sans traces"},
@@ -291,26 +313,32 @@ const ROOMS = [
     {t:"Serviettes propres pliées + tapis de bain"},
     {t:"Remplir savon, gel douche, papier toilette"},
   ]},
-  {id:"chambre", icon:"🛏️", name:"Chambre(s)", tasks:[
+  {id:"chambre", icon:"🛏️", name:"Chambre(s)",
+   photo:"chambre.jpg",
+   tasks:[
     {t:"Retirer le linge sale (compter dans l'onglet Linge)"},
-    {t:"Draps & taies propres, lit fait « comme à l'hôtel »", video:"Faire un lit impeccable"},
+    {t:"Draps & taies propres, lit fait « comme à l'hôtel »", video:"Faire un lit impeccable", videoUrl:"lit.mp4"},
     {t:"Dépoussiérer tables de nuit, lampes, cadres"},
     {t:"Vérifier sous le lit et dans les placards (oublis voyageurs)"},
     {t:"Aérer 10 min puis aspirateur"},
   ]},
-  {id:"terrasse", icon:"🌿", name:"Terrasses & bar extérieur", tasks:[
+  {id:"terrasse", icon:"🌿", name:"Terrasses & bar extérieur",
+   photo:"terrasse.jpg",
+   tasks:[
     {t:"Brosser la terrasse de devant"},
     {t:"Brosser la terrasse sous le porche"},
     {t:"Brosser la terrasse face cuisine"},
-    {t:"Remettre les transats en place", video:"Disposition des transats"},
+    {t:"Remettre les transats en place", video:"Disposition des transats", videoUrl:"transats.mp4"},
     {t:"Ranger le bar — vérifier le frigo"},
     {t:"Nettoyer le comptoir du bar"},
   ]},
-  {id:"salon", icon:"🛋️", name:"Salon & pièces de vie", tasks:[
+  {id:"salon", icon:"🛋️", name:"Salon & pièces de vie",
+   photo:"salon.jpg",
+   tasks:[
     {t:"Aspirer canapé, coussins et dessous"},
     {t:"Dépoussiérer meubles, écrans et étagères"},
     {t:"Ranger télécommandes, plaids, déco"},
-    {t:"Tester TV + Wi-Fi (laisser le code en évidence)", video:"Connexion Wi-Fi & box"},
+    {t:"Tester TV + Wi-Fi (laisser le code en évidence)", video:"Connexion Wi-Fi & box", videoUrl:"wifi.mp4"},
     {t:"Sols : aspirateur puis serpillière"},
   ]},
 ];
@@ -326,14 +354,14 @@ const LINEN = [
 ];
 
 const INVENTORY = [
-  {n:"Papier toilette",      u:"rouleaux",  min:4,  start:8},
-  {n:"Essuie-tout",          u:"rouleaux",  min:1,  start:3},
-  {n:"Capsules / café",      u:"unités",    min:6,  start:20},
-  {n:"Gel douche & savon",   u:"flacons",   min:1,  start:2},
-  {n:"Sacs poubelle",        u:"sacs",      min:5,  start:15},
-  {n:"Pastilles lave-vaisselle", u:"pastilles", min:5, start:20},
-  {n:"Éponges",              u:"unités",    min:1,  start:3},
-  {n:"Sel / poivre / huile", u:"check",     min:1,  start:1},
+  {n:"Papier toilette",          u:"rouleaux",   min:4,  start:8},
+  {n:"Essuie-tout",              u:"rouleaux",   min:1,  start:3},
+  {n:"Capsules / café",          u:"unités",     min:6,  start:20},
+  {n:"Gel douche & savon",       u:"flacons",    min:1,  start:2},
+  {n:"Sacs poubelle",            u:"sacs",       min:5,  start:15},
+  {n:"Pastilles lave-vaisselle", u:"pastilles",  min:5,  start:20},
+  {n:"Éponges",                  u:"unités",     min:1,  start:3},
+  {n:"Sel / poivre / huile",     u:"check",      min:1,  start:1},
 ];
 
 const FINAL = [
@@ -348,7 +376,7 @@ const FINAL = [
 ];
 
 /* ============================================================
-   ÉTAT + STOCKAGE (localStorage)
+   ÉTAT + STOCKAGE
    ============================================================ */
 const SKEY = "menage_airbnb_v1";
 let state = {tasks:{}, linen:{}, inv:{}, problems:[], final:{}, lastReset:null};
@@ -356,7 +384,7 @@ let state = {tasks:{}, linen:{}, inv:{}, problems:[], final:{}, lastReset:null};
 function load(){
   try{
     const raw = localStorage.getItem(SKEY);
-    if(raw){ const parsed = JSON.parse(raw); state = {...state, ...parsed}; }
+    if(raw){ state = {...state, ...JSON.parse(raw)}; }
   }catch(e){}
 }
 
@@ -369,25 +397,53 @@ function save(){
       const s = document.getElementById('saving');
       s.classList.add('show');
       setTimeout(()=>s.classList.remove('show'), 1200);
-    }catch(e){ console.error('Erreur de sauvegarde:', e); }
+    }catch(e){}
   }, 400);
 }
 
 /* ============================================================
-   RENDU
+   UTILITAIRE — résoudre une URL média
+   Accepte : nom de fichier local ("plaques.mp4") ou URL complète
+   ============================================================ */
+function mediaUrl(src, folder){
+  if(!src) return null;
+  if(src.startsWith('http')) return src;
+  return folder + '/' + src;
+}
+
+function isYoutube(url){
+  return url && (url.includes('youtube.com') || url.includes('youtu.be'));
+}
+
+function youtubeEmbed(url){
+  return url.replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+}
+
+/* ============================================================
+   RENDU — PIÈCES
    ============================================================ */
 function renderRooms(){
   const wrap = document.getElementById('rooms');
   wrap.innerHTML = "";
 
   ROOMS.forEach(room=>{
-    const total = room.tasks.length;
-    const done  = room.tasks.filter((_,i)=>state.tasks[room.id+"_"+i]).length;
-    const pct   = Math.round(done/total*100);
+    const total   = room.tasks.length;
+    const done    = room.tasks.filter((_,i)=>state.tasks[room.id+"_"+i]).length;
+    const pct     = Math.round(done/total*100);
     const allDone = done === total;
+    const photoSrc = mediaUrl(room.photo, 'photos');
 
     const el = document.createElement('div');
     el.className = "room" + (done>0 && !allDone ? " open" : "");
+
+    const photoHtml = photoSrc ? `
+      <div class="room-photo-wrap">
+        <img class="room-photo" src="${photoSrc}" alt="État attendu — ${room.name}"
+             loading="lazy"
+             onclick="event.stopPropagation();openPhoto('${photoSrc}','${room.name} — état attendu')"
+             onerror="this.parentNode.style.display='none'">
+        <span class="photo-label">📸 état attendu</span>
+      </div>` : '';
 
     el.innerHTML = `
       <div class="room-head" onclick="this.parentNode.classList.toggle('open')">
@@ -399,39 +455,42 @@ function renderRooms(){
         </div>
         <div class="chev">▶</div>
       </div>
-      <div class="room-body"><div class="room-inner">
-        <div class="room-actions">
-          <button class="btn-sm" onclick="event.stopPropagation();checkAll('${room.id}',${done<total})">
-            ${done<total ? '✓ Tout cocher' : '↺ Tout décocher'}
-          </button>
+      <div class="room-body">
+        ${photoHtml}
+        <div class="room-inner">
+          <div class="room-actions">
+            <button class="btn-sm" onclick="event.stopPropagation();checkAll('${room.id}',${done<total})">
+              ${done<total ? '✓ Tout cocher' : '↺ Tout décocher'}
+            </button>
+          </div>
+          ${room.tasks.map((tk,i)=>{
+            const k = room.id+"_"+i, on = state.tasks[k];
+            const vUrl = tk.videoUrl ? mediaUrl(tk.videoUrl, 'videos') : null;
+            return `<div class="task ${on?'done':''}">
+              <div class="check" onclick="toggleTask('${k}')">
+                <svg viewBox="0 0 24 24"><polyline points="4 13 9 18 20 5"/></svg>
+              </div>
+              <div class="task-txt">${tk.t}
+                ${tk.cle   ? '<span class="tag cle">🔑 clé</span>' : ''}
+                ${tk.video ? `<span class="tag video" onclick="event.stopPropagation();openVideo('${vUrl||''}','${tk.video}')">▶ vidéo</span>` : ''}
+                ${tk.note  ? `<div class="note">⚠ ${tk.note}</div>` : ''}
+              </div>
+            </div>`;
+          }).join("")}
         </div>
-        ${room.tasks.map((tk,i)=>{
-          const k = room.id+"_"+i, on = state.tasks[k];
-          return `<div class="task ${on?'done':''}" data-k="${k}">
-            <div class="check" onclick="toggleTask('${k}')">
-              <svg viewBox="0 0 24 24"><polyline points="4 13 9 18 20 5"/></svg>
-            </div>
-            <div class="task-txt">${tk.t}
-              ${tk.cle  ? '<span class="tag cle">🔑 clé</span>' : ''}
-              ${tk.video? `<span class="tag video" onclick="event.stopPropagation();openModal('${tk.video}','${tk.videoUrl||''}')">▶ vidéo</span>`:''}
-              ${tk.note ? `<div class="note">⚠ ${tk.note}</div>`:''}
-            </div>
-          </div>`;
-        }).join("")}
-      </div></div>`;
+      </div>`;
     wrap.appendChild(el);
   });
   updateGlobal();
 }
 
-function toggleTask(k){ state.tasks[k] = !state.tasks[k]; save(); renderRooms(); }
+function toggleTask(k){ state.tasks[k]=!state.tasks[k]; save(); renderRooms(); }
 
 function checkAll(roomId, check){
   const room = ROOMS.find(r=>r.id===roomId);
-  if(!room)return;
-  room.tasks.forEach((_,i)=>{ state.tasks[roomId+"_"+i] = check; });
+  if(!room) return;
+  room.tasks.forEach((_,i)=>{ state.tasks[roomId+"_"+i]=check; });
   save(); renderRooms();
-  document.querySelector(`[data-room-id="${roomId}"]`)?.classList.toggle('open');
 }
 
 function updateGlobal(){
@@ -442,18 +501,18 @@ function updateGlobal(){
   document.getElementById('gPct').textContent  = pct;
   const rem = total-done;
   const dot = document.getElementById('dotMenage');
-  dot.textContent    = rem;
-  dot.style.display  = rem ? 'grid' : 'none';
+  dot.textContent   = rem;
+  dot.style.display = rem ? 'grid' : 'none';
 
-  // Horodatage dernier ménage
   const stamp = document.getElementById('lastStamp');
-  if(state.lastReset){
-    stamp.innerHTML = `<div class="stamp"><strong>Dernier ménage terminé</strong>${state.lastReset}</div>`;
-  } else {
-    stamp.innerHTML = '';
-  }
+  stamp.innerHTML = state.lastReset
+    ? `<div class="stamp"><strong>Dernier ménage terminé</strong>${state.lastReset}</div>`
+    : '';
 }
 
+/* ============================================================
+   RENDU — LINGE
+   ============================================================ */
 function renderLinen(){
   const g = document.getElementById('linenGrid');
   g.innerHTML = `
@@ -461,8 +520,8 @@ function renderLinen(){
     <div class="linen-head" style="text-align:center">Sortie</div>
     <div class="linen-head" style="text-align:center">Entrée</div>`;
   LINEN.forEach((name,i)=>{
-    const o = state.linen["o"+i]||0, e = state.linen["e"+i]||0;
-    g.innerHTML += `
+    const o=state.linen["o"+i]||0, e=state.linen["e"+i]||0;
+    g.innerHTML+=`
       <div>${name}</div>
       <div style="text-align:center"><div class="stepper" style="display:inline-flex">
         <button onclick="linen(${i},'o',-1)">−</button><span>${o}</span><button onclick="linen(${i},'o',1)">＋</button>
@@ -474,13 +533,16 @@ function renderLinen(){
 }
 function linen(i,t,d){ const k=t+i; state.linen[k]=Math.max(0,(state.linen[k]||0)+d); save(); renderLinen(); }
 
+/* ============================================================
+   RENDU — INVENTAIRE
+   ============================================================ */
 function renderInv(){
   const wrap = document.getElementById('invList');
   wrap.innerHTML = "";
   INVENTORY.forEach((it,i)=>{
     const q   = state.inv[i]!==undefined ? state.inv[i] : it.start;
-    const low = q <= it.min;
-    wrap.innerHTML += `
+    const low = q<=it.min;
+    wrap.innerHTML+=`
       <div class="inv-row">
         <div class="name">${it.n} ${low?'<span class="badge-low">· à racheter</span>':''}
           <small>${it.u==='check'?'présence à vérifier':'reste '+q+' '+it.u+' · seuil '+it.min}</small>
@@ -494,20 +556,21 @@ function renderInv(){
 function inv(i,d){ const cur=state.inv[i]!==undefined?state.inv[i]:INVENTORY[i].start; state.inv[i]=Math.max(0,cur+d); save(); renderInv(); }
 
 function copyShop(){
-  const list = INVENTORY
-    .filter((it,i)=>{ const q=state.inv[i]!==undefined?state.inv[i]:it.start; return q<=it.min; })
-    .map(it=>"• "+it.n);
-  const txt = list.length ? ("Liste de courses :\n"+list.join("\n")) : "Rien à racheter pour l'instant 🎉";
+  const list = INVENTORY.filter((it,i)=>{ const q=state.inv[i]!==undefined?state.inv[i]:it.start; return q<=it.min; }).map(it=>"• "+it.n);
+  const txt  = list.length ? ("Liste de courses :\n"+list.join("\n")) : "Rien à racheter pour l'instant 🎉";
   if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>alert("Liste copiée !\n\n"+txt)).catch(()=>alert(txt)); }
   else alert(txt);
 }
 
+/* ============================================================
+   RENDU — PROBLÈMES
+   ============================================================ */
 function renderProblems(){
   const wrap = document.getElementById('probList');
   if(!state.problems.length){
-    wrap.innerHTML = '<div class="empty">Aucun problème signalé.</div>';
+    wrap.innerHTML='<div class="empty">Aucun problème signalé.</div>';
   } else {
-    wrap.innerHTML = state.problems.map((p,i)=>`
+    wrap.innerHTML=state.problems.map((p,i)=>`
       <div class="prob ${p.fixed?'fixed':''}">
         <b>${p.title}</b>${p.desc?'<div style="font-size:13px;margin-top:3px">'+p.desc+'</div>':''}
         <div class="meta">
@@ -520,31 +583,27 @@ function renderProblems(){
         </div>
       </div>`).join("");
   }
-  const open = state.problems.filter(p=>!p.fixed).length;
-  const dot  = document.getElementById('dotProb');
-  dot.textContent   = open;
-  dot.style.display = open ? 'grid' : 'none';
+  const open=state.problems.filter(p=>!p.fixed).length;
+  const dot=document.getElementById('dotProb');
+  dot.textContent=open; dot.style.display=open?'grid':'none';
 }
-
 function addProblem(){
-  const t = document.getElementById('probTitle').value.trim();
-  if(!t) return;
-  const d = document.getElementById('probDesc').value.trim();
-  state.problems.unshift({
-    title: t, desc: d, fixed: false,
-    date: new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
-  });
-  document.getElementById('probTitle').value = "";
-  document.getElementById('probDesc').value  = "";
+  const t=document.getElementById('probTitle').value.trim(); if(!t)return;
+  const d=document.getElementById('probDesc').value.trim();
+  state.problems.unshift({title:t,desc:d,fixed:false,date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})});
+  document.getElementById('probTitle').value=""; document.getElementById('probDesc').value="";
   save(); renderProblems();
 }
-function toggleFix(i){ state.problems[i].fixed = !state.problems[i].fixed; save(); renderProblems(); }
+function toggleFix(i){ state.problems[i].fixed=!state.problems[i].fixed; save(); renderProblems(); }
 function delProblem(i){ state.problems.splice(i,1); save(); renderProblems(); }
 
+/* ============================================================
+   RENDU — CHECK FINAL
+   ============================================================ */
 function renderFinal(){
-  const wrap = document.getElementById('finalList');
-  wrap.innerHTML = FINAL.map((f,i)=>{
-    const on = state.final[i];
+  const wrap=document.getElementById('finalList');
+  wrap.innerHTML=FINAL.map((f,i)=>{
+    const on=state.final[i];
     return `<div class="final-item">
       <div class="check" style="${on?'background:var(--moss);border-color:var(--moss)':''}" onclick="toggleFinal(${i})">
         <svg viewBox="0 0 24 24" style="opacity:${on?1:0}"><polyline points="4 13 9 18 20 5"/></svg>
@@ -556,38 +615,45 @@ function renderFinal(){
 function toggleFinal(i){ state.final[i]=!state.final[i]; save(); renderFinal(); }
 
 /* ============================================================
-   VIDÉO MODALE
+   MODALE — PHOTO
    ============================================================ */
-function openModal(title, url){
-  document.getElementById('vidLabel').textContent = title;
-  const content = document.getElementById('vidContent');
-  if(url){
-    // Transformer l'URL YouTube en URL d'embed
-    const embedUrl = url.replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
-    content.innerHTML = `<div class="vid-wrap"><iframe src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>`;
+function openPhoto(src, title){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalMedia').innerHTML = `<img src="${src}" alt="${title}" style="width:100%;max-height:70vh;object-fit:contain;display:block;background:#000">`;
+  document.getElementById('modal').classList.add('open');
+}
+
+/* ============================================================
+   MODALE — VIDÉO
+   ============================================================ */
+function openVideo(url, title){
+  document.getElementById('modalTitle').textContent = title;
+  const media = document.getElementById('modalMedia');
+
+  if(!url){
+    media.innerHTML = `<div class="placeholder"><div>
+      <div class="play">▶</div>
+      <div style="font-weight:700">${title}</div>
+      <div style="font-size:12px;opacity:.6;margin-top:6px">Vidéo à venir — déposez le fichier dans le dossier /videos/</div>
+    </div></div>`;
+  } else if(isYoutube(url)){
+    media.innerHTML = `<div class="vid-wrap"><iframe src="${youtubeEmbed(url)}" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>`;
   } else {
-    content.innerHTML = `
-      <div class="vid-placeholder">
-        <div>
-          <div class="play">▶</div>
-          <div style="font-weight:700">${title}</div>
-          <div style="font-size:12px;opacity:.6;margin-top:6px">Vidéo à venir — ajoutez un lien YouTube dans les données.</div>
-        </div>
-      </div>`;
+    media.innerHTML = `<video controls autoplay playsinline src="${url}">Votre navigateur ne supporte pas la lecture vidéo.</video>`;
   }
   document.getElementById('modal').classList.add('open');
 }
+
 function closeModal(){
   document.getElementById('modal').classList.remove('open');
-  document.getElementById('vidContent').innerHTML = '';
+  document.getElementById('modalMedia').innerHTML='';
 }
 
 /* ============================================================
    TABS
    ============================================================ */
 document.getElementById('tabs').addEventListener('click', e=>{
-  const t = e.target.closest('.tab');
-  if(!t) return;
+  const t=e.target.closest('.tab'); if(!t)return;
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
   t.classList.add('active');
@@ -599,52 +665,37 @@ document.getElementById('tabs').addEventListener('click', e=>{
    RÉINITIALISATION
    ============================================================ */
 function resetAll(){
-  if(!confirm("Réinitialiser pour le prochain voyageur ?\n\nLes tâches, le linge et le check final seront remis à zéro.\nLe stock et les problèmes sont conservés.")) return;
-  const now = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
-  state.lastReset = now;
-  state.tasks  = {};
-  state.linen  = {};
-  state.final  = {};
-  save();
-  renderRooms(); renderLinen(); renderFinal();
+  if(!confirm("Réinitialiser pour le prochain voyageur ?\n\nTâches, linge et check final seront remis à zéro.\nLe stock et les problèmes sont conservés.")) return;
+  state.lastReset = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+  state.tasks={}; state.linen={}; state.final={};
+  save(); renderRooms(); renderLinen(); renderFinal();
 }
 
 /* ============================================================
-   PWA — installation
+   PWA
    ============================================================ */
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e=>{
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('installBanner').style.display = 'flex';
+  e.preventDefault(); deferredPrompt=e;
+  document.getElementById('installBanner').style.display='flex';
 });
 document.getElementById('installBtn').addEventListener('click', async()=>{
   if(!deferredPrompt) return;
   deferredPrompt.prompt();
-  const {outcome} = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  document.getElementById('installBanner').style.display = 'none';
+  await deferredPrompt.userChoice;
+  deferredPrompt=null;
+  document.getElementById('installBanner').style.display='none';
 });
 document.getElementById('closeBanner').addEventListener('click', ()=>{
-  document.getElementById('installBanner').style.display = 'none';
+  document.getElementById('installBanner').style.display='none';
 });
-
-/* ============================================================
-   SERVICE WORKER
-   ============================================================ */
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
-}
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
 /* ============================================================
    INIT
    ============================================================ */
 load();
-renderRooms();
-renderLinen();
-renderInv();
-renderProblems();
-renderFinal();
+renderRooms(); renderLinen(); renderInv(); renderProblems(); renderFinal();
 </script>
 </body>
 </html>
