@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Entretien — Ma location</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3f5d45">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Entretien">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=DM+Sans:wght@400;500;700&display=swap');
+
+  :root{
+    --bg:#f4efe6;
+    --ink:#1f1b16;
+    --paper:#fffdf8;
+    --line:#e3dac9;
+    --moss:#3f5d45;
+    --moss-soft:#e7eee6;
+    --terra:#c25a32;
+    --gold:#caa24b;
+    --muted:#8a8170;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px -12px rgba(31,27,22,.25);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);
+    line-height:1.5;padding-bottom:calc(90px + var(--safe-bottom));
+    background-image:radial-gradient(rgba(63,93,69,.04) 1px,transparent 1px);background-size:22px 22px;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.02em;line-height:1.05}
+
+  /* ---------- Header ---------- */
+  header{
+    background:var(--moss);color:#f4efe6;padding:calc(26px + env(safe-area-inset-top,0px)) 20px 20px;position:relative;overflow:hidden;
+  }
+  header::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+    border:14px solid rgba(255,255,255,.06);border-radius:50%}
+  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.7;font-weight:700}
+  header h1{font-size:30px;margin-top:4px;color:#fff}
+  .home-name{font-style:italic;font-weight:400;opacity:.85;font-size:15px;margin-top:6px;font-family:'Fraunces',serif}
+
+  .progress-wrap{margin-top:18px}
+  .progress-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:7px}
+  .progress-top b{font-family:'Fraunces',serif;font-size:18px}
+  .bar{height:9px;background:rgba(255,255,255,.18);border-radius:20px;overflow:hidden}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#f0d896);border-radius:20px;width:0;transition:width .5s cubic-bezier(.3,1,.4,1)}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{display:flex;gap:6px;padding:14px 14px 0;overflow-x:auto;position:sticky;top:0;z-index:30;
+    background:linear-gradient(var(--bg) 70%,transparent);scrollbar-width:none}
+  nav.tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;border:none;background:var(--paper);color:var(--muted);font-family:'DM Sans';
+    font-weight:700;font-size:13px;padding:10px 15px;border-radius:14px 14px 0 0;cursor:pointer;
+    border:1px solid var(--line);border-bottom:none;display:flex;align-items:center;gap:6px;transition:.2s}
+  .tab.active{background:var(--paper);color:var(--moss);box-shadow:0 -3px 0 var(--terra) inset}
+  .tab .dot{background:var(--terra);color:#fff;font-size:10px;min-width:17px;height:17px;border-radius:9px;
+    display:grid;place-items:center;font-weight:700}
+
+  main{padding:8px 16px 0}
+  .panel{display:none;animation:fade .35s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- Room cards ---------- */
+  .room{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin:14px 0;overflow:hidden;box-shadow:var(--shadow)}
+  .room-head{display:flex;align-items:center;gap:13px;padding:15px 16px;cursor:pointer;user-select:none}
+  .room-ico{width:42px;height:42px;border-radius:12px;background:var(--moss-soft);display:grid;place-items:center;font-size:20px;flex:0 0 auto}
+  .room-meta{flex:1;min-width:0}
+  .room-meta h3{font-size:18px}
+  .room-sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .mini-bar{height:5px;width:60px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:7px}
+  .mini-bar > i{display:block;height:100%;background:var(--moss);width:0;transition:width .4s}
+  .chev{transition:.3s;color:var(--muted);font-size:14px}
+  .room.open .chev{transform:rotate(90deg)}
+  .room-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .room.open .room-body{max-height:3000px}
+  .room-inner{padding:4px 16px 16px}
+
+  /* bouton tout cocher */
+  .room-actions{display:flex;justify-content:flex-end;padding:0 0 10px;gap:8px}
+  .btn-sm{border:none;background:var(--moss-soft);color:var(--moss);font-family:'DM Sans';font-weight:700;
+    font-size:12px;padding:6px 12px;border-radius:20px;cursor:pointer}
+  .btn-sm:active{background:var(--moss);color:#fff}
+
+  /* ---------- Checklist items ---------- */
+  .task{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px dashed var(--line)}
+  .task:first-child{border-top:none}
+  .check{flex:0 0 auto;width:24px;height:24px;border-radius:7px;border:2px solid var(--moss);
+    background:var(--paper);cursor:pointer;display:grid;place-items:center;margin-top:1px;transition:.18s}
+  .check svg{width:14px;height:14px;stroke:#fff;stroke-width:3.5;fill:none;opacity:0;transition:.18s}
+  .task.done .check{background:var(--moss);border-color:var(--moss)}
+  .task.done .check svg{opacity:1}
+  .task-txt{flex:1;font-size:14.5px;transition:.18s}
+  .task.done .task-txt{color:var(--muted);text-decoration:line-through}
+  .tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:20px;
+    margin-left:6px;vertical-align:middle;text-transform:uppercase}
+  .tag.cle{background:#fdeee6;color:var(--terra)}
+  .tag.video{background:var(--moss-soft);color:var(--moss);cursor:pointer}
+  .note{font-size:12.5px;color:var(--muted);margin-top:3px;font-style:italic}
+
+  /* ---------- Generic card ---------- */
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}
+  .card h2{font-size:21px;margin-bottom:4px}
+  .card .lead{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+  .section-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:700;margin:22px 4px 2px}
+
+  /* inventory */
+  .inv-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px dashed var(--line)}
+  .inv-row:first-child{border-top:none}
+  .inv-row .name{flex:1;font-size:14.5px}
+  .inv-row .name small{display:block;color:var(--muted);font-size:12px}
+  .stepper{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .stepper button{border:none;background:var(--moss-soft);width:34px;height:34px;font-size:18px;cursor:pointer;color:var(--moss);font-weight:700}
+  .stepper button:active{background:var(--moss);color:#fff}
+  .stepper span{min-width:36px;text-align:center;font-weight:700;font-size:15px}
+  .restock{background:#fdeee6 !important}
+  .badge-low{color:var(--terra);font-weight:700;font-size:12px}
+
+  /* problems */
+  textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;
+    font-family:'DM Sans';font-size:14px;background:var(--bg);resize:vertical}
+  textarea:focus,input:focus{outline:2px solid var(--moss);border-color:transparent}
+  .btn{background:var(--terra);color:#fff;border:none;border-radius:12px;padding:12px 18px;font-family:'DM Sans';
+    font-weight:700;font-size:14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+  .btn:active{transform:scale(.97)}
+  .btn.ghost{background:var(--moss-soft);color:var(--moss)}
+  .prob{background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--terra);border-radius:10px;padding:12px 14px;margin-top:10px}
+  .prob.fixed{border-left-color:var(--moss);opacity:.6}
+  .prob .meta{font-size:11px;color:var(--muted);margin-top:5px;display:flex;justify-content:space-between;align-items:center}
+
+  /* linen */
+  .linen-grid{display:grid;grid-template-columns:1fr auto auto;gap:0 10px;align-items:center}
+  .linen-grid > div{padding:11px 0;border-top:1px dashed var(--line)}
+  .linen-head{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;border-top:none !important}
+
+  /* final */
+  .final-item{display:flex;gap:12px;align-items:center;padding:13px 0;border-top:1px dashed var(--line);font-size:15px}
+  .final-item:first-child{border-top:none}
+
+  /* horodatage */
+  .stamp{background:var(--moss-soft);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--muted)}
+  .stamp strong{color:var(--moss);font-size:14px;display:block;margin-bottom:2px}
+
+  .reset{display:block;margin:26px auto 10px;background:none;border:1px solid var(--line);color:var(--muted);
+    padding:11px 20px;border-radius:30px;font-family:'DM Sans';font-weight:700;font-size:13px;cursor:pointer}
+
+  /* video modal */
+  .modal{position:fixed;inset:0;background:rgba(31,27,22,.7);display:none;place-items:center;z-index:100;padding:20px}
+  .modal.open{display:grid}
+  .modal-box{background:var(--paper);border-radius:18px;max-width:560px;width:100%;overflow:hidden}
+  .modal-box .vid-wrap{position:relative;aspect-ratio:16/9;background:#000}
+  .modal-box .vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+  .modal-box .vid-placeholder{aspect-ratio:16/9;background:#000;display:grid;place-items:center;color:#fff;text-align:center;padding:20px}
+  .modal-box .vid-placeholder .play{width:60px;height:60px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;font-size:24px;margin:0 auto 12px}
+  .modal-foot{padding:16px;display:flex;justify-content:space-between;align-items:center}
+
+  .empty{text-align:center;color:var(--muted);font-size:13.5px;padding:24px 10px;font-style:italic}
+  .saving{position:fixed;bottom:calc(16px + var(--safe-bottom));left:50%;transform:translateX(-50%);
+    background:var(--ink);color:#fff;font-size:12px;padding:7px 14px;border-radius:20px;
+    opacity:0;transition:.3s;z-index:60;pointer-events:none;white-space:nowrap}
+  .saving.show{opacity:1}
+
+  /* install banner */
+  .install-banner{background:var(--moss);color:#fff;padding:12px 16px;display:flex;align-items:center;
+    gap:12px;font-size:13px;font-weight:700;cursor:pointer}
+  .install-banner span{flex:1}
+  .install-banner button{background:#fff;color:var(--moss);border:none;border-radius:8px;padding:6px 12px;font-weight:700;font-size:12px;cursor:pointer}
+  .install-banner .close-banner{background:none;color:rgba(255,255,255,.7);font-size:18px;padding:0 4px}
+</style>
+</head>
+<body>
+
+<!-- banner install PWA (affiché dynamiquement) -->
+<div class="install-banner" id="installBanner" style="display:none">
+  <span>📲 Installer l'app sur votre téléphone</span>
+  <button id="installBtn">Installer</button>
+  <button class="close-banner" id="closeBanner">✕</button>
+</div>
+
+<header>
+  <div class="eyebrow">Protocole d'entretien</div>
+  <h1>Préparer l'arrivée</h1>
+  <div class="home-name" id="homeName">Ma maison · changement de voyageurs</div>
+  <div class="progress-wrap">
+    <div class="progress-top"><span>Avancement global</span><span><b id="gPct">0</b>%</span></div>
+    <div class="bar"><i id="gBar"></i></div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-p="menage">🧽 Ménage <span class="dot" id="dotMenage" style="display:none">0</span></button>
+  <button class="tab" data-p="linge">🛏️ Linge</button>
+  <button class="tab" data-p="stock">🧴 Stock</button>
+  <button class="tab" data-p="probleme">⚠️ Problèmes <span class="dot" id="dotProb" style="display:none">0</span></button>
+  <button class="tab" data-p="final">✅ Check final</button>
+</nav>
+
+<main>
+  <!-- MENAGE -->
+  <section class="panel active" id="menage">
+    <div id="lastStamp"></div>
+    <div id="rooms"></div>
+  </section>
+
+  <!-- LINGE -->
+  <section class="panel" id="linge">
+    <div class="card">
+      <h2>Comptage du linge</h2>
+      <p class="lead">Comptez à la sortie ET à l'entrée pour ne rien perdre au lavage.</p>
+      <div class="linen-grid" id="linenGrid"></div>
+    </div>
+  </section>
+
+  <!-- STOCK -->
+  <section class="panel" id="stock">
+    <div class="card">
+      <h2>Inventaire & réappro</h2>
+      <p class="lead">Réglez la quantité restante. Sous le seuil, l'article passe en « à racheter ».</p>
+      <div id="invList"></div>
+      <button class="btn ghost" style="margin-top:16px" onclick="copyShop()">📋 Copier la liste de courses</button>
+    </div>
+  </section>
+
+  <!-- PROBLEMES -->
+  <section class="panel" id="probleme">
+    <div class="card">
+      <h2>Signaler un problème</h2>
+      <p class="lead">Casse, panne, tache, objet oublié par un voyageur…</p>
+      <input type="text" id="probTitle" placeholder="Ex : Lampe de chevet cassée — chambre 1" style="margin-bottom:10px">
+      <textarea id="probDesc" rows="2" placeholder="Détails (facultatif)…"></textarea>
+      <button class="btn" style="margin-top:12px" onclick="addProblem()">＋ Ajouter</button>
+      <div id="probList" style="margin-top:8px"></div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="panel" id="final">
+    <div class="card">
+      <h2>Avant de fermer</h2>
+      <p class="lead">La dernière ligne droite. Tout vérifier avant de partir.</p>
+      <div id="finalList"></div>
+    </div>
+  </section>
+
+  <button class="reset" onclick="resetAll()">↺ Réinitialiser pour le prochain voyageur</button>
+</main>
+
+<!-- video modal -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div id="vidContent"></div>
+    <div class="modal-foot">
+      <span style="font-size:13px;color:var(--muted)" id="vidLabel">Tuto vidéo</span>
+      <button class="btn ghost" onclick="closeModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div class="saving" id="saving">Enregistré ✓</div>
+
+<script>
+/* ============================================================
+   DONNÉES — modifiez librement cette section
+   ============================================================ */
+
+const ROOMS = [
+  {id:"entree", icon:"🚪", name:"Entrée & couloir", tasks:[
+    {t:"Récupérer les clés / vérifier le boîtier à code", cle:true},
+    {t:"Vider et désinfecter la poubelle"},
+    {t:"Aspirateur puis serpillière"},
+    {t:"Dépoussiérer surfaces, interrupteurs, poignées"},
+  ]},
+  {id:"cuisine", icon:"🍳", name:"Cuisine", tasks:[
+    {t:"Vider le frigo, jeter les restes, nettoyer l'intérieur"},
+    {t:"Nettoyer plaques, four et micro-ondes", video:"Dégraisser les plaques"},
+    {t:"Laver, sécher et ranger toute la vaisselle"},
+    {t:"Désinfecter plans de travail et évier"},
+    {t:"Vérifier consommables (café, sel, huile, éponges)"},
+    {t:"Lancer / vider le lave-vaisselle"},
+    {t:"Sortir les poubelles et remettre un sac propre"},
+  ]},
+  {id:"sdb", icon:"🚿", name:"Salle de bain & WC", tasks:[
+    {t:"Désinfecter WC (cuvette, abattant, sol autour)"},
+    {t:"Nettoyer douche/baignoire — anti-calcaire"},
+    {t:"Lavabo, robinetterie et miroir sans traces"},
+    {t:"Vérifier l'absence de cheveux partout", note:"Point n°1 des mauvais avis voyageurs"},
+    {t:"Serviettes propres pliées + tapis de bain"},
+    {t:"Remplir savon, gel douche, papier toilette"},
+  ]},
+  {id:"chambre", icon:"🛏️", name:"Chambre(s)", tasks:[
+    {t:"Retirer le linge sale (compter dans l'onglet Linge)"},
+    {t:"Draps & taies propres, lit fait « comme à l'hôtel »", video:"Faire un lit impeccable"},
+    {t:"Dépoussiérer tables de nuit, lampes, cadres"},
+    {t:"Vérifier sous le lit et dans les placards (oublis voyageurs)"},
+    {t:"Aérer 10 min puis aspirateur"},
+  ]},
+  {id:"terrasse", icon:"🌿", name:"Terrasses & bar extérieur", tasks:[
+    {t:"Brosser la terrasse de devant"},
+    {t:"Brosser la terrasse sous le porche"},
+    {t:"Brosser la terrasse face cuisine"},
+    {t:"Remettre les transats en place", video:"Disposition des transats"},
+    {t:"Ranger le bar — vérifier le frigo"},
+    {t:"Nettoyer le comptoir du bar"},
+  ]},
+  {id:"salon", icon:"🛋️", name:"Salon & pièces de vie", tasks:[
+    {t:"Aspirer canapé, coussins et dessous"},
+    {t:"Dépoussiérer meubles, écrans et étagères"},
+    {t:"Ranger télécommandes, plaids, déco"},
+    {t:"Tester TV + Wi-Fi (laisser le code en évidence)", video:"Connexion Wi-Fi & box"},
+    {t:"Sols : aspirateur puis serpillière"},
+  ]},
+];
+
+const LINEN = [
+  "Draps (housses)",
+  "Taies d'oreiller",
+  "Housses de couette",
+  "Serviettes bain",
+  "Serviettes mains",
+  "Tapis de bain",
+  "Torchons cuisine",
+];
+
+const INVENTORY = [
+  {n:"Papier toilette",      u:"rouleaux",  min:4,  start:8},
+  {n:"Essuie-tout",          u:"rouleaux",  min:1,  start:3},
+  {n:"Capsules / café",      u:"unités",    min:6,  start:20},
+  {n:"Gel douche & savon",   u:"flacons",   min:1,  start:2},
+  {n:"Sacs poubelle",        u:"sacs",      min:5,  start:15},
+  {n:"Pastilles lave-vaisselle", u:"pastilles", min:5, start:20},
+  {n:"Éponges",              u:"unités",    min:1,  start:3},
+  {n:"Sel / poivre / huile", u:"check",     min:1,  start:1},
+];
+
+const FINAL = [
+  "Toutes les lumières éteintes",
+  "Fenêtres fermées et verrouillées",
+  "Chauffage / clim réglé en mode éco",
+  "Vérifier qu'aucun appareil ne chauffe",
+  "Poubelles sorties",
+  "Code Wi-Fi & livret d'accueil visibles",
+  "Photos « état attendu » prises",
+  "Porte verrouillée, clés rangées",
+];
+
+/* ============================================================
+   ÉTAT + STOCKAGE (localStorage)
+   ============================================================ */
+const SKEY = "menage_airbnb_v1";
+let state = {tasks:{}, linen:{}, inv:{}, problems:[], final:{}, lastReset:null};
+
+function load(){
+  try{
+    const raw = localStorage.getItem(SKEY);
+    if(raw){ const parsed = JSON.parse(raw); state = {...state, ...parsed}; }
+  }catch(e){}
+}
+
+let saveTimer;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    try{
+      localStorage.setItem(SKEY, JSON.stringify(state));
+      const s = document.getElementById('saving');
+      s.classList.add('show');
+      setTimeout(()=>s.classList.remove('show'), 1200);
+    }catch(e){ console.error('Erreur de sauvegarde:', e); }
+  }, 400);
+}
+
+/* ============================================================
+   RENDU
+   ============================================================ */
+function renderRooms(){
+  const wrap = document.getElementById('rooms');
+  wrap.innerHTML = "";
+
+  ROOMS.forEach(room=>{
+    const total = room.tasks.length;
+    const done  = room.tasks.filter((_,i)=>state.tasks[room.id+"_"+i]).length;
+    const pct   = Math.round(done/total*100);
+    const allDone = done === total;
+
+    const el = document.createElement('div');
+    el.className = "room" + (done>0 && !allDone ? " open" : "");
+
+    el.innerHTML = `
+      <div class="room-head" onclick="this.parentNode.classList.toggle('open')">
+        <div class="room-ico">${room.icon}</div>
+        <div class="room-meta">
+          <h3>${room.name}</h3>
+          <div class="room-sub">${done}/${total} tâches${allDone?' · ✓ terminée':''}</div>
+          <div class="mini-bar"><i style="width:${pct}%"></i></div>
+        </div>
+        <div class="chev">▶</div>
+      </div>
+      <div class="room-body"><div class="room-inner">
+        <div class="room-actions">
+          <button class="btn-sm" onclick="event.stopPropagation();checkAll('${room.id}',${done<total})">
+            ${done<total ? '✓ Tout cocher' : '↺ Tout décocher'}
+          </button>
+        </div>
+        ${room.tasks.map((tk,i)=>{
+          const k = room.id+"_"+i, on = state.tasks[k];
+          return `<div class="task ${on?'done':''}" data-k="${k}">
+            <div class="check" onclick="toggleTask('${k}')">
+              <svg viewBox="0 0 24 24"><polyline points="4 13 9 18 20 5"/></svg>
+            </div>
+            <div class="task-txt">${tk.t}
+              ${tk.cle  ? '<span class="tag cle">🔑 clé</span>' : ''}
+              ${tk.video? `<span class="tag video" onclick="event.stopPropagation();openModal('${tk.video}','${tk.videoUrl||''}')">▶ vidéo</span>`:''}
+              ${tk.note ? `<div class="note">⚠ ${tk.note}</div>`:''}
+            </div>
+          </div>`;
+        }).join("")}
+      </div></div>`;
+    wrap.appendChild(el);
+  });
+  updateGlobal();
+}
+
+function toggleTask(k){ state.tasks[k] = !state.tasks[k]; save(); renderRooms(); }
+
+function checkAll(roomId, check){
+  const room = ROOMS.find(r=>r.id===roomId);
+  if(!room)return;
+  room.tasks.forEach((_,i)=>{ state.tasks[roomId+"_"+i] = check; });
+  save(); renderRooms();
+  document.querySelector(`[data-room-id="${roomId}"]`)?.classList.toggle('open');
+}
+
+function updateGlobal(){
+  let total=0, done=0;
+  ROOMS.forEach(r=>r.tasks.forEach((_,i)=>{ total++; if(state.tasks[r.id+"_"+i])done++; }));
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('gBar').style.width = pct+"%";
+  document.getElementById('gPct').textContent  = pct;
+  const rem = total-done;
+  const dot = document.getElementById('dotMenage');
+  dot.textContent    = rem;
+  dot.style.display  = rem ? 'grid' : 'none';
+
+  // Horodatage dernier ménage
+  const stamp = document.getElementById('lastStamp');
+  if(state.lastReset){
+    stamp.innerHTML = `<div class="stamp"><strong>Dernier ménage terminé</strong>${state.lastReset}</div>`;
+  } else {
+    stamp.innerHTML = '';
+  }
+}
+
+function renderLinen(){
+  const g = document.getElementById('linenGrid');
+  g.innerHTML = `
+    <div class="linen-head">Article</div>
+    <div class="linen-head" style="text-align:center">Sortie</div>
+    <div class="linen-head" style="text-align:center">Entrée</div>`;
+  LINEN.forEach((name,i)=>{
+    const o = state.linen["o"+i]||0, e = state.linen["e"+i]||0;
+    g.innerHTML += `
+      <div>${name}</div>
+      <div style="text-align:center"><div class="stepper" style="display:inline-flex">
+        <button onclick="linen(${i},'o',-1)">−</button><span>${o}</span><button onclick="linen(${i},'o',1)">＋</button>
+      </div></div>
+      <div style="text-align:center"><div class="stepper" style="display:inline-flex">
+        <button onclick="linen(${i},'e',-1)">−</button><span>${e}</span><button onclick="linen(${i},'e',1)">＋</button>
+      </div></div>`;
+  });
+}
+function linen(i,t,d){ const k=t+i; state.linen[k]=Math.max(0,(state.linen[k]||0)+d); save(); renderLinen(); }
+
+function renderInv(){
+  const wrap = document.getElementById('invList');
+  wrap.innerHTML = "";
+  INVENTORY.forEach((it,i)=>{
+    const q   = state.inv[i]!==undefined ? state.inv[i] : it.start;
+    const low = q <= it.min;
+    wrap.innerHTML += `
+      <div class="inv-row">
+        <div class="name">${it.n} ${low?'<span class="badge-low">· à racheter</span>':''}
+          <small>${it.u==='check'?'présence à vérifier':'reste '+q+' '+it.u+' · seuil '+it.min}</small>
+        </div>
+        <div class="stepper ${low?'restock':''}">
+          <button onclick="inv(${i},-1)">−</button><span>${q}</span><button onclick="inv(${i},1)">＋</button>
+        </div>
+      </div>`;
+  });
+}
+function inv(i,d){ const cur=state.inv[i]!==undefined?state.inv[i]:INVENTORY[i].start; state.inv[i]=Math.max(0,cur+d); save(); renderInv(); }
+
+function copyShop(){
+  const list = INVENTORY
+    .filter((it,i)=>{ const q=state.inv[i]!==undefined?state.inv[i]:it.start; return q<=it.min; })
+    .map(it=>"• "+it.n);
+  const txt = list.length ? ("Liste de courses :\n"+list.join("\n")) : "Rien à racheter pour l'instant 🎉";
+  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>alert("Liste copiée !\n\n"+txt)).catch(()=>alert(txt)); }
+  else alert(txt);
+}
+
+function renderProblems(){
+  const wrap = document.getElementById('probList');
+  if(!state.problems.length){
+    wrap.innerHTML = '<div class="empty">Aucun problème signalé.</div>';
+  } else {
+    wrap.innerHTML = state.problems.map((p,i)=>`
+      <div class="prob ${p.fixed?'fixed':''}">
+        <b>${p.title}</b>${p.desc?'<div style="font-size:13px;margin-top:3px">'+p.desc+'</div>':''}
+        <div class="meta">
+          <span>${p.date}</span>
+          <span>
+            <a onclick="toggleFix(${i})" style="cursor:pointer;color:var(--moss);font-weight:700">${p.fixed?'↺ rouvrir':'✓ résolu'}</a>
+            &nbsp;·&nbsp;
+            <a onclick="delProblem(${i})" style="cursor:pointer;font-weight:700;color:var(--terra)">✕</a>
+          </span>
+        </div>
+      </div>`).join("");
+  }
+  const open = state.problems.filter(p=>!p.fixed).length;
+  const dot  = document.getElementById('dotProb');
+  dot.textContent   = open;
+  dot.style.display = open ? 'grid' : 'none';
+}
+
+function addProblem(){
+  const t = document.getElementById('probTitle').value.trim();
+  if(!t) return;
+  const d = document.getElementById('probDesc').value.trim();
+  state.problems.unshift({
+    title: t, desc: d, fixed: false,
+    date: new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
+  });
+  document.getElementById('probTitle').value = "";
+  document.getElementById('probDesc').value  = "";
+  save(); renderProblems();
+}
+function toggleFix(i){ state.problems[i].fixed = !state.problems[i].fixed; save(); renderProblems(); }
+function delProblem(i){ state.problems.splice(i,1); save(); renderProblems(); }
+
+function renderFinal(){
+  const wrap = document.getElementById('finalList');
+  wrap.innerHTML = FINAL.map((f,i)=>{
+    const on = state.final[i];
+    return `<div class="final-item">
+      <div class="check" style="${on?'background:var(--moss);border-color:var(--moss)':''}" onclick="toggleFinal(${i})">
+        <svg viewBox="0 0 24 24" style="opacity:${on?1:0}"><polyline points="4 13 9 18 20 5"/></svg>
+      </div>
+      <span style="${on?'color:var(--muted);text-decoration:line-through':''}">${f}</span>
+    </div>`;
+  }).join("");
+}
+function toggleFinal(i){ state.final[i]=!state.final[i]; save(); renderFinal(); }
+
+/* ============================================================
+   VIDÉO MODALE
+   ============================================================ */
+function openModal(title, url){
+  document.getElementById('vidLabel').textContent = title;
+  const content = document.getElementById('vidContent');
+  if(url){
+    // Transformer l'URL YouTube en URL d'embed
+    const embedUrl = url.replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+    content.innerHTML = `<div class="vid-wrap"><iframe src="${embedUrl}" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>`;
+  } else {
+    content.innerHTML = `
+      <div class="vid-placeholder">
+        <div>
+          <div class="play">▶</div>
+          <div style="font-weight:700">${title}</div>
+          <div style="font-size:12px;opacity:.6;margin-top:6px">Vidéo à venir — ajoutez un lien YouTube dans les données.</div>
+        </div>
+      </div>`;
+  }
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('vidContent').innerHTML = '';
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+document.getElementById('tabs').addEventListener('click', e=>{
+  const t = e.target.closest('.tab');
+  if(!t) return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById(t.dataset.p).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* ============================================================
+   RÉINITIALISATION
+   ============================================================ */
+function resetAll(){
+  if(!confirm("Réinitialiser pour le prochain voyageur ?\n\nLes tâches, le linge et le check final seront remis à zéro.\nLe stock et les problèmes sont conservés.")) return;
+  const now = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+  state.lastReset = now;
+  state.tasks  = {};
+  state.linen  = {};
+  state.final  = {};
+  save();
+  renderRooms(); renderLinen(); renderFinal();
+}
+
+/* ============================================================
+   PWA — installation
+   ============================================================ */
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').style.display = 'flex';
+});
+document.getElementById('installBtn').addEventListener('click', async()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const {outcome} = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('installBanner').style.display = 'none';
+});
+document.getElementById('closeBanner').addEventListener('click', ()=>{
+  document.getElementById('installBanner').style.display = 'none';
+});
+
+/* ============================================================
+   SERVICE WORKER
+   ============================================================ */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+load();
+renderRooms();
+renderLinen();
+renderInv();
+renderProblems();
+renderFinal();
+</script>
+</body>
+</html>
