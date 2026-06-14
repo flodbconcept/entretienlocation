@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>QR Code — Entretien location</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+  body{font-family:'Helvetica Neue',sans-serif;background:#f4efe6;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
+  .card{background:#fff;border-radius:24px;padding:40px;text-align:center;box-shadow:0 4px 40px rgba(0,0,0,.12);max-width:360px;width:100%}
+  .icon{font-size:48px;margin-bottom:8px}
+  h1{font-size:22px;color:#3f5d45;margin:0 0 4px;font-weight:900}
+  .sub{font-size:14px;color:#8a8170;margin-bottom:28px}
+  canvas{border-radius:12px}
+  .url{margin-top:20px;font-size:12px;color:#8a8170;word-break:break-all}
+  .print-btn{margin-top:24px;background:#3f5d45;color:#fff;border:none;border-radius:12px;
+    padding:12px 28px;font-size:15px;font-weight:700;cursor:pointer}
+  @media print{
+    body{background:#fff}
+    .print-btn{display:none}
+    .card{box-shadow:none;border:1px solid #e3dac9}
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🧽</div>
+  <h1>Protocole d'entretien</h1>
+  <p class="sub">Scannez pour accéder à la checklist</p>
+  <canvas id="qr"></canvas>
+  <div class="url">entretienlocation.vercel.app</div>
+  <button class="print-btn" onclick="window.print()">🖨️ Imprimer</button>
+</div>
+<script>
+QRCode.toCanvas(document.getElementById('qr'), 'https://entretienlocation.vercel.app/', {
+  width: 240,
+  margin: 2,
+  color: { dark: '#1f1b16', light: '#ffffff' }
+});
+</script>
+</body>
+</html>
