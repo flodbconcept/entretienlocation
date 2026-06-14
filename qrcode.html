@@ -2,40 +2,246 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QR Code — La belle échappée</title>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,900&family=DM+Sans:wght@400;700&display=swap');
-  body{font-family:'DM Sans',sans-serif;background:#f4efe6;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
-  .card{background:#fff;border-radius:24px;padding:40px 36px;text-align:center;box-shadow:0 4px 40px rgba(0,0,0,.12);max-width:360px;width:90%}
-  .maison{font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:28px;color:#3f5d45;margin:0 0 4px}
-  .sub{font-size:14px;color:#8a8170;margin-bottom:24px}
-  #qr{display:flex;justify-content:center;margin:0 auto}
-  #qr img, #qr canvas{border-radius:12px;border:1px solid #e3dac9}
-  .url{margin-top:16px;font-size:12px;color:#8a8170}
-  .print-btn{margin-top:22px;background:#3f5d45;color:#fff;border:none;border-radius:12px;
-    padding:12px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
-  .print-btn:active{opacity:.85}
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,900&family=DM+Sans:wght@400;500;700&display=swap');
+
+  /* ---- Écran ---- */
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:#e8e0d4;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:30px 16px;
+    gap:20px;
+  }
+
+  .page{
+    background:#fff;
+    width:210mm;
+    min-height:297mm;
+    border-radius:6px;
+    box-shadow:0 8px 60px rgba(0,0,0,.18);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* bandeau vert en haut */
+  .banner{
+    background:#3f5d45;
+    padding:40px 48px 36px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .banner::before{
+    content:"";position:absolute;right:-50px;top:-50px;
+    width:200px;height:200px;
+    border:24px solid rgba(255,255,255,.06);border-radius:50%;
+  }
+  .banner::after{
+    content:"";position:absolute;left:-40px;bottom:-40px;
+    width:160px;height:160px;
+    border:18px solid rgba(255,255,255,.05);border-radius:50%;
+  }
+  .banner-eyebrow{
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+    color:rgba(255,255,255,.6);font-weight:700;margin-bottom:10px;
+  }
+  .banner-title{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:900;
+    font-size:52px;color:#fff;line-height:1;
+    position:relative;z-index:1;
+  }
+  .banner-sub{
+    font-size:14px;color:rgba(255,255,255,.72);margin-top:10px;font-weight:500;
+  }
+
+  /* corps */
+  .body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:44px 48px;
+    gap:32px;
+  }
+
+  .instruction{
+    text-align:center;
+    max-width:420px;
+  }
+  .instruction h2{
+    font-family:'Fraunces',serif;font-weight:900;
+    font-size:26px;color:#1f1b16;margin-bottom:8px;letter-spacing:-.02em;
+  }
+  .instruction p{
+    font-size:15px;color:#8a8170;line-height:1.55;
+  }
+
+  /* QR code */
+  .qr-wrap{
+    background:#fff;
+    border:3px solid #e3dac9;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 4px 32px rgba(63,93,69,.1);
+  }
+  #qr canvas, #qr img{
+    display:block;border-radius:8px;
+  }
+
+  /* URL */
+  .url-chip{
+    display:flex;align-items:center;gap:10px;
+    background:#f4efe6;border:1px solid #e3dac9;
+    border-radius:40px;padding:10px 20px;
+    font-size:14px;font-weight:700;color:#3f5d45;
+    letter-spacing:.01em;
+  }
+  .url-dot{
+    width:8px;height:8px;border-radius:50%;background:#3f5d45;flex-shrink:0;
+  }
+
+  /* étapes */
+  .steps{
+    display:flex;gap:20px;width:100%;max-width:460px;
+  }
+  .step{
+    flex:1;text-align:center;
+  }
+  .step-num{
+    width:36px;height:36px;border-radius:50%;
+    background:#3f5d45;color:#fff;
+    font-weight:700;font-size:15px;
+    display:grid;place-items:center;margin:0 auto 8px;
+  }
+  .step-label{font-size:12px;color:#8a8170;line-height:1.4;font-weight:500}
+
+  /* pied */
+  .footer{
+    border-top:1px solid #e3dac9;
+    padding:16px 48px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .footer-logo{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:900;
+    font-size:18px;color:#3f5d45;
+  }
+  .footer-note{font-size:11px;color:#c2b89a;}
+
+  /* bouton impression — masqué à l'impression */
+  .print-bar{
+    display:flex;gap:12px;align-items:center;justify-content:center;
+  }
+  .btn-print{
+    background:#3f5d45;color:#fff;border:none;border-radius:12px;
+    padding:14px 32px;font-family:'DM Sans',sans-serif;font-weight:700;
+    font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;
+  }
+  .btn-print:hover{background:#2e4432}
+  .btn-print svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;flex-shrink:0}
+  .hint{font-size:13px;color:#8a8170}
+
+  /* ---- Impression / PDF ---- */
   @media print{
-    body{background:#fff}
-    .print-btn{display:none}
-    .card{box-shadow:none;border:1px solid #e3dac9}
+    @page{
+      size:A4 portrait;
+      margin:0;
+    }
+    body{
+      background:#fff;
+      padding:0;
+      display:block;
+    }
+    .page{
+      width:100%;
+      min-height:100vh;
+      box-shadow:none;
+      border-radius:0;
+    }
+    .print-bar{display:none}
   }
 </style>
 </head>
 <body>
-<div class="card">
-  <p class="maison">La belle échappée</p>
-  <p class="sub">Scannez pour accéder au protocole d'entretien</p>
-  <div id="qr"></div>
-  <div class="url">entretienlocation.vercel.app</div>
-  <button class="print-btn" onclick="window.print()">Imprimer</button>
+
+<!-- bouton impression (masqué à l'impression) -->
+<div class="print-bar">
+  <button class="btn-print" onclick="window.print()">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Imprimer / Enregistrer en PDF
+  </button>
+  <span class="hint">Dans la boîte de dialogue → sélectionner « Enregistrer en PDF »</span>
 </div>
+
+<!-- Page A4 -->
+<div class="page">
+
+  <!-- Bandeau vert -->
+  <div class="banner">
+    <div class="banner-eyebrow">Protocole d'entretien</div>
+    <div class="banner-title">La belle échappée</div>
+    <div class="banner-sub">Scannez le QR code pour accéder à la checklist de ménage</div>
+  </div>
+
+  <!-- Corps -->
+  <div class="body">
+
+    <div class="instruction">
+      <h2>Comment utiliser l'application ?</h2>
+      <p>Pointez l'appareil photo de votre téléphone sur le QR code ci-dessous. Vous accédez directement au protocole d'entretien complet — pas besoin de télécharger quoi que ce soit.</p>
+    </div>
+
+    <div class="qr-wrap">
+      <div id="qr"></div>
+    </div>
+
+    <div class="url-chip">
+      <span class="url-dot"></span>
+      entretienlocation.vercel.app
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-label">Ouvrez l'appareil photo de votre téléphone</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-label">Pointez sur le QR code et attendez 2 secondes</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-label">Suivez les checklists pièce par pièce</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Pied de page -->
+  <div class="footer">
+    <div class="footer-logo">La belle échappée</div>
+    <div class="footer-note">Application d'entretien · entretienlocation.vercel.app</div>
+  </div>
+
+</div>
+
 <script>
 new QRCode(document.getElementById('qr'), {
   text: 'https://entretienlocation.vercel.app/',
-  width: 240,
-  height: 240,
+  width: 260,
+  height: 260,
   colorDark: '#1f1b16',
   colorLight: '#ffffff',
   correctLevel: QRCode.CorrectLevel.H
