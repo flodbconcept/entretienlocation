@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Entretien">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=DM+Sans:wght@400;500;700&display=swap');
 
@@ -33,6 +34,9 @@
   }
   h1,h2,h3{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.02em;line-height:1.05}
 
+  /* icônes Lucide */
+  [data-lucide]{display:inline-block;vertical-align:middle;flex-shrink:0}
+
   /* ---------- Header ---------- */
   header{
     background:var(--moss);color:#f4efe6;
@@ -56,10 +60,11 @@
   nav.tabs::-webkit-scrollbar{display:none}
   .tab{flex:0 0 auto;border:none;background:var(--paper);color:var(--muted);font-family:'DM Sans';
     font-weight:700;font-size:13px;padding:10px 15px;border-radius:14px 14px 0 0;cursor:pointer;
-    border:1px solid var(--line);border-bottom:none;display:flex;align-items:center;gap:6px;transition:.2s}
+    border:1px solid var(--line);border-bottom:none;display:flex;align-items:center;gap:7px;transition:.2s}
+  .tab [data-lucide]{width:15px;height:15px;stroke:currentColor}
   .tab.active{background:var(--paper);color:var(--moss);box-shadow:0 -3px 0 var(--terra) inset}
   .tab .dot{background:var(--terra);color:#fff;font-size:10px;min-width:17px;height:17px;border-radius:9px;
-    display:grid;place-items:center;font-weight:700}
+    display:grid;place-items:center;font-weight:700;margin-left:2px}
 
   main{padding:8px 16px 0}
   .panel{display:none;animation:fade .35s ease}
@@ -69,29 +74,34 @@
   /* ---------- Room cards ---------- */
   .room{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin:14px 0;overflow:hidden;box-shadow:var(--shadow)}
   .room-head{display:flex;align-items:center;gap:13px;padding:15px 16px;cursor:pointer;user-select:none}
-  .room-ico{width:42px;height:42px;border-radius:12px;background:var(--moss-soft);display:grid;place-items:center;font-size:20px;flex:0 0 auto}
+  .room-ico{width:42px;height:42px;border-radius:12px;background:var(--moss-soft);display:grid;place-items:center;flex:0 0 auto}
+  .room-ico [data-lucide]{width:22px;height:22px;stroke:var(--moss);stroke-width:1.8}
   .room-meta{flex:1;min-width:0}
   .room-meta h3{font-size:18px}
   .room-sub{font-size:12px;color:var(--muted);margin-top:2px}
   .mini-bar{height:5px;width:60px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:7px}
   .mini-bar > i{display:block;height:100%;background:var(--moss);width:0;transition:width .4s}
-  .chev{transition:.3s;color:var(--muted);font-size:14px}
+  .chev{transition:.3s;color:var(--muted)}
+  .chev [data-lucide]{width:16px;height:16px;stroke:currentColor}
   .room.open .chev{transform:rotate(90deg)}
   .room-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
   .room.open .room-body{max-height:4000px}
   .room-inner{padding:4px 16px 16px}
 
   /* photo pièce */
-  .room-photo{width:100%;height:180px;object-fit:cover;display:block;cursor:pointer}
+  .room-photo{width:100%;height:200px;object-fit:cover;display:block;cursor:pointer}
   .room-photo-wrap{position:relative}
   .room-photo-wrap .photo-label{position:absolute;bottom:8px;right:10px;
     background:rgba(31,27,22,.55);color:#fff;font-size:11px;font-weight:700;
-    padding:3px 9px;border-radius:20px;backdrop-filter:blur(4px)}
+    padding:3px 10px;border-radius:20px;backdrop-filter:blur(4px);
+    display:flex;align-items:center;gap:5px}
+  .room-photo-wrap .photo-label [data-lucide]{width:12px;height:12px;stroke:#fff}
 
   /* bouton tout cocher */
-  .room-actions{display:flex;justify-content:flex-end;padding:8px 0 6px;gap:8px}
+  .room-actions{display:flex;justify-content:flex-end;padding:8px 0 6px}
   .btn-sm{border:none;background:var(--moss-soft);color:var(--moss);font-family:'DM Sans';font-weight:700;
-    font-size:12px;padding:6px 12px;border-radius:20px;cursor:pointer}
+    font-size:12px;padding:6px 12px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+  .btn-sm [data-lucide]{width:13px;height:13px;stroke:currentColor}
   .btn-sm:active{background:var(--moss);color:#fff}
 
   /* ---------- Checklist items ---------- */
@@ -99,20 +109,23 @@
   .task:first-child{border-top:none}
   .check{flex:0 0 auto;width:24px;height:24px;border-radius:7px;border:2px solid var(--moss);
     background:var(--paper);cursor:pointer;display:grid;place-items:center;margin-top:1px;transition:.18s}
-  .check svg{width:14px;height:14px;stroke:#fff;stroke-width:3.5;fill:none;opacity:0;transition:.18s}
+  .check [data-lucide]{width:14px;height:14px;stroke:#fff;stroke-width:3;opacity:0;transition:.18s}
   .task.done .check{background:var(--moss);border-color:var(--moss)}
-  .task.done .check svg{opacity:1}
+  .task.done .check [data-lucide]{opacity:1}
   .task-txt{flex:1;font-size:14.5px;transition:.18s}
   .task.done .task-txt{color:var(--muted);text-decoration:line-through}
-  .tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:20px;
-    margin-left:6px;vertical-align:middle;text-transform:uppercase}
+  .tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;letter-spacing:.04em;
+    padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle;text-transform:uppercase}
+  .tag [data-lucide]{width:11px;height:11px;stroke:currentColor}
   .tag.cle{background:#fdeee6;color:var(--terra)}
   .tag.video{background:var(--moss-soft);color:var(--moss);cursor:pointer}
-  .note{font-size:12.5px;color:var(--muted);margin-top:3px;font-style:italic}
+  .note{font-size:12.5px;color:var(--muted);margin-top:3px;font-style:italic;display:flex;align-items:center;gap:5px}
+  .note [data-lucide]{width:13px;height:13px;stroke:currentColor;flex-shrink:0}
 
   /* ---------- Generic card ---------- */
   .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}
-  .card h2{font-size:21px;margin-bottom:4px}
+  .card h2{font-size:21px;margin-bottom:4px;display:flex;align-items:center;gap:9px}
+  .card h2 [data-lucide]{width:20px;height:20px;stroke:var(--moss);stroke-width:1.8}
   .card .lead{font-size:13.5px;color:var(--muted);margin-bottom:14px}
 
   /* inventory */
@@ -121,8 +134,9 @@
   .inv-row .name{flex:1;font-size:14.5px}
   .inv-row .name small{display:block;color:var(--muted);font-size:12px}
   .stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-  .stepper button{border:none;background:var(--moss-soft);width:34px;height:34px;font-size:18px;cursor:pointer;color:var(--moss);font-weight:700}
+  .stepper button{border:none;background:var(--moss-soft);width:34px;height:34px;font-size:18px;cursor:pointer;color:var(--moss);font-weight:700;display:grid;place-items:center}
   .stepper button:active{background:var(--moss);color:#fff}
+  .stepper button [data-lucide]{width:16px;height:16px;stroke:currentColor}
   .stepper span{min-width:36px;text-align:center;font-weight:700;font-size:15px}
   .restock{background:#fdeee6 !important}
   .badge-low{color:var(--terra);font-weight:700;font-size:12px}
@@ -133,11 +147,14 @@
   textarea:focus,input:focus{outline:2px solid var(--moss);border-color:transparent}
   .btn{background:var(--terra);color:#fff;border:none;border-radius:12px;padding:12px 18px;font-family:'DM Sans';
     font-weight:700;font-size:14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+  .btn [data-lucide]{width:16px;height:16px;stroke:currentColor}
   .btn:active{transform:scale(.97)}
   .btn.ghost{background:var(--moss-soft);color:var(--moss)}
   .prob{background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--terra);border-radius:10px;padding:12px 14px;margin-top:10px}
   .prob.fixed{border-left-color:var(--moss);opacity:.6}
   .prob .meta{font-size:11px;color:var(--muted);margin-top:5px;display:flex;justify-content:space-between;align-items:center}
+  .prob .meta a{display:inline-flex;align-items:center;gap:3px;cursor:pointer;font-weight:700}
+  .prob .meta a [data-lucide]{width:13px;height:13px;stroke:currentColor}
 
   /* linen */
   .linen-grid{display:grid;grid-template-columns:1fr auto auto;gap:0 10px;align-items:center}
@@ -149,23 +166,28 @@
   .final-item:first-child{border-top:none}
 
   /* horodatage */
-  .stamp{background:var(--moss-soft);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--muted)}
-  .stamp strong{color:var(--moss);font-size:14px;display:block;margin-bottom:2px}
+  .stamp{background:var(--moss-soft);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:14px 0;font-size:13px;color:var(--muted);display:flex;align-items:flex-start;gap:10px}
+  .stamp [data-lucide]{width:18px;height:18px;stroke:var(--moss);flex-shrink:0;margin-top:1px}
+  .stamp div strong{color:var(--moss);font-size:14px;display:block;margin-bottom:2px}
 
-  .reset{display:block;margin:26px auto 10px;background:none;border:1px solid var(--line);color:var(--muted);
+  /* reset */
+  .reset{display:flex;align-items:center;justify-content:center;gap:8px;margin:26px auto 10px;
+    background:none;border:1px solid var(--line);color:var(--muted);
     padding:11px 20px;border-radius:30px;font-family:'DM Sans';font-weight:700;font-size:13px;cursor:pointer}
+  .reset [data-lucide]{width:15px;height:15px;stroke:currentColor}
 
-  /* ---------- Modale (photo + vidéo) ---------- */
+  /* ---------- Modale ---------- */
   .modal{position:fixed;inset:0;background:rgba(31,27,22,.8);display:none;place-items:center;z-index:100;padding:16px}
   .modal.open{display:grid}
   .modal-box{background:var(--paper);border-radius:18px;max-width:580px;width:100%;overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
   .modal-media{flex:1;overflow:hidden;background:#000}
-  .modal-media img{width:100%;height:100%;object-fit:contain;display:block;max-height:70vh}
+  .modal-media img{width:100%;max-height:70vh;object-fit:contain;display:block}
   .modal-media video{width:100%;display:block;max-height:70vh;background:#000}
   .modal-media .vid-wrap{position:relative;aspect-ratio:16/9}
   .modal-media .vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
   .modal-media .placeholder{aspect-ratio:16/9;display:grid;place-items:center;color:#fff;text-align:center;padding:20px}
-  .modal-media .placeholder .play{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,.5);display:grid;place-items:center;font-size:24px;margin:0 auto 12px}
+  .modal-media .placeholder .play-ring{width:64px;height:64px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;margin:0 auto 14px}
+  .modal-media .placeholder .play-ring [data-lucide]{width:28px;height:28px;stroke:#fff}
   .modal-foot{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
   .modal-foot .modal-title{font-weight:700;font-size:15px;font-family:'Fraunces',serif}
 
@@ -173,23 +195,26 @@
 
   .saving{position:fixed;bottom:calc(16px + var(--safe-bottom));left:50%;transform:translateX(-50%);
     background:var(--ink);color:#fff;font-size:12px;padding:7px 14px;border-radius:20px;
-    opacity:0;transition:.3s;z-index:60;pointer-events:none;white-space:nowrap}
+    opacity:0;transition:.3s;z-index:60;pointer-events:none;white-space:nowrap;
+    display:flex;align-items:center;gap:6px}
+  .saving [data-lucide]{width:13px;height:13px;stroke:currentColor}
   .saving.show{opacity:1}
 
   /* install banner */
-  .install-banner{background:var(--moss);color:#fff;padding:12px 16px;display:flex;align-items:center;
-    gap:12px;font-size:13px;font-weight:700}
+  .install-banner{background:var(--moss);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700}
+  .install-banner [data-lucide]{width:18px;height:18px;stroke:#fff;flex-shrink:0}
   .install-banner span{flex:1}
   .install-banner button{background:#fff;color:var(--moss);border:none;border-radius:8px;padding:6px 12px;font-weight:700;font-size:12px;cursor:pointer}
-  .install-banner .close-banner{background:none;color:rgba(255,255,255,.7);font-size:18px;padding:0 4px;cursor:pointer}
+  .install-banner .close-banner{background:none;border:none;cursor:pointer;padding:0 2px;display:grid;place-items:center}
 </style>
 </head>
 <body>
 
 <div class="install-banner" id="installBanner" style="display:none">
-  <span>📲 Installer l'app sur votre téléphone</span>
+  <i data-lucide="smartphone"></i>
+  <span>Installer l'app sur votre téléphone</span>
   <button id="installBtn">Installer</button>
-  <button class="close-banner" id="closeBanner">✕</button>
+  <button class="close-banner" id="closeBanner"><i data-lucide="x"></i></button>
 </div>
 
 <header>
@@ -203,11 +228,11 @@
 </header>
 
 <nav class="tabs" id="tabs">
-  <button class="tab active" data-p="menage">🧽 Ménage <span class="dot" id="dotMenage" style="display:none">0</span></button>
-  <button class="tab" data-p="linge">🛏️ Linge</button>
-  <button class="tab" data-p="stock">🧴 Stock</button>
-  <button class="tab" data-p="probleme">⚠️ Problèmes <span class="dot" id="dotProb" style="display:none">0</span></button>
-  <button class="tab" data-p="final">✅ Check final</button>
+  <button class="tab active" data-p="menage"><i data-lucide="sparkles"></i> Ménage <span class="dot" id="dotMenage" style="display:none">0</span></button>
+  <button class="tab" data-p="linge"><i data-lucide="shirt"></i> Linge</button>
+  <button class="tab" data-p="stock"><i data-lucide="package"></i> Stock</button>
+  <button class="tab" data-p="probleme"><i data-lucide="alert-triangle"></i> Problèmes <span class="dot" id="dotProb" style="display:none">0</span></button>
+  <button class="tab" data-p="final"><i data-lucide="check-circle"></i> Check final</button>
 </nav>
 
 <main>
@@ -218,7 +243,7 @@
 
   <section class="panel" id="linge">
     <div class="card">
-      <h2>Comptage du linge</h2>
+      <h2><i data-lucide="shirt"></i> Comptage du linge</h2>
       <p class="lead">Comptez à la sortie ET à l'entrée pour ne rien perdre au lavage.</p>
       <div class="linen-grid" id="linenGrid"></div>
     </div>
@@ -226,33 +251,39 @@
 
   <section class="panel" id="stock">
     <div class="card">
-      <h2>Inventaire & réappro</h2>
+      <h2><i data-lucide="package"></i> Inventaire & réappro</h2>
       <p class="lead">Réglez la quantité restante. Sous le seuil, l'article passe en « à racheter ».</p>
       <div id="invList"></div>
-      <button class="btn ghost" style="margin-top:16px" onclick="copyShop()">📋 Copier la liste de courses</button>
+      <button class="btn ghost" style="margin-top:16px" onclick="copyShop()">
+        <i data-lucide="clipboard-copy"></i> Copier la liste de courses
+      </button>
     </div>
   </section>
 
   <section class="panel" id="probleme">
     <div class="card">
-      <h2>Signaler un problème</h2>
+      <h2><i data-lucide="alert-triangle"></i> Signaler un problème</h2>
       <p class="lead">Casse, panne, tache, objet oublié par un voyageur…</p>
       <input type="text" id="probTitle" placeholder="Ex : Lampe de chevet cassée — chambre 1" style="margin-bottom:10px">
       <textarea id="probDesc" rows="2" placeholder="Détails (facultatif)…"></textarea>
-      <button class="btn" style="margin-top:12px" onclick="addProblem()">＋ Ajouter</button>
+      <button class="btn" style="margin-top:12px" onclick="addProblem()">
+        <i data-lucide="plus"></i> Ajouter
+      </button>
       <div id="probList" style="margin-top:8px"></div>
     </div>
   </section>
 
   <section class="panel" id="final">
     <div class="card">
-      <h2>Avant de fermer</h2>
+      <h2><i data-lucide="check-circle"></i> Avant de fermer</h2>
       <p class="lead">La dernière ligne droite. Tout vérifier avant de partir.</p>
       <div id="finalList"></div>
     </div>
   </section>
 
-  <button class="reset" onclick="resetAll()">↺ Réinitialiser pour le prochain voyageur</button>
+  <button class="reset" onclick="resetAll()">
+    <i data-lucide="rotate-ccw"></i> Réinitialiser pour le prochain voyageur
+  </button>
 </main>
 
 <!-- Modale universelle photo + vidéo -->
@@ -261,96 +292,80 @@
     <div class="modal-media" id="modalMedia"></div>
     <div class="modal-foot">
       <span class="modal-title" id="modalTitle"></span>
-      <button class="btn ghost" onclick="closeModal()">Fermer</button>
+      <button class="btn ghost" onclick="closeModal()"><i data-lucide="x"></i> Fermer</button>
     </div>
   </div>
 </div>
 
-<div class="saving" id="saving">Enregistré ✓</div>
+<div class="saving" id="saving"><i data-lucide="check"></i> Enregistré</div>
 
 <script>
 /* ============================================================
    DONNÉES — modifiez librement cette section
    ============================================================
-
-   Pour chaque pièce :
-   - photo : nom du fichier dans le dossier /photos/  (ex: "cuisine.jpg")
-
-   Pour chaque tâche avec une vidéo :
-   - video   : titre affiché dans la modale
-   - videoUrl: nom du fichier dans /videos/ OU lien YouTube complet
-               ex local   : "plaques.mp4"
-               ex YouTube : "https://youtu.be/XXXXXXX"
+   icon     : nom d'icône Lucide  → https://lucide.dev/icons/
+   photo    : fichier dans /photos/   (ex: "cuisine.jpg")
+   videoUrl : fichier dans /videos/   (ex: "plaques.mp4")
+              OU lien YouTube complet (ex: "https://youtu.be/XXX")
    ============================================================ */
 
 const ROOMS = [
-  {id:"entree", icon:"🚪", name:"Entrée & couloir",
-   photo:"entree.jpg",
-   tasks:[
-    {t:"Récupérer les clés / vérifier le boîtier à code", cle:true},
-    {t:"Vider et désinfecter la poubelle"},
-    {t:"Aspirateur puis serpillière"},
-    {t:"Dépoussiérer surfaces, interrupteurs, poignées"},
-  ]},
-  {id:"cuisine", icon:"🍳", name:"Cuisine",
-   photo:"cuisine.jpg",
-   tasks:[
-    {t:"Vider le frigo, jeter les restes, nettoyer l'intérieur"},
-    {t:"Nettoyer plaques, four et micro-ondes", video:"Dégraisser les plaques", videoUrl:"plaques.mp4"},
-    {t:"Laver, sécher et ranger toute la vaisselle"},
-    {t:"Désinfecter plans de travail et évier"},
-    {t:"Vérifier consommables (café, sel, huile, éponges)"},
-    {t:"Lancer / vider le lave-vaisselle"},
-    {t:"Sortir les poubelles et remettre un sac propre"},
-  ]},
-  {id:"sdb", icon:"🚿", name:"Salle de bain & WC",
-   photo:"sdb.jpg",
-   tasks:[
-    {t:"Désinfecter WC (cuvette, abattant, sol autour)"},
-    {t:"Nettoyer douche/baignoire — anti-calcaire"},
-    {t:"Lavabo, robinetterie et miroir sans traces"},
-    {t:"Vérifier l'absence de cheveux partout", note:"Point n°1 des mauvais avis voyageurs"},
-    {t:"Serviettes propres pliées + tapis de bain"},
-    {t:"Remplir savon, gel douche, papier toilette"},
-  ]},
-  {id:"chambre", icon:"🛏️", name:"Chambre(s)",
-   photo:"chambre.jpg",
-   tasks:[
-    {t:"Retirer le linge sale (compter dans l'onglet Linge)"},
-    {t:"Draps & taies propres, lit fait « comme à l'hôtel »", video:"Faire un lit impeccable", videoUrl:"lit.mp4"},
-    {t:"Dépoussiérer tables de nuit, lampes, cadres"},
-    {t:"Vérifier sous le lit et dans les placards (oublis voyageurs)"},
-    {t:"Aérer 10 min puis aspirateur"},
-  ]},
-  {id:"terrasse", icon:"🌿", name:"Terrasses & bar extérieur",
-   photo:"terrasse.jpg",
-   tasks:[
-    {t:"Brosser la terrasse de devant"},
-    {t:"Brosser la terrasse sous le porche"},
-    {t:"Brosser la terrasse face cuisine"},
-    {t:"Remettre les transats en place", video:"Disposition des transats", videoUrl:"transats.mp4"},
-    {t:"Ranger le bar — vérifier le frigo"},
-    {t:"Nettoyer le comptoir du bar"},
-  ]},
-  {id:"salon", icon:"🛋️", name:"Salon & pièces de vie",
-   photo:"salon.jpg",
-   tasks:[
-    {t:"Aspirer canapé, coussins et dessous"},
-    {t:"Dépoussiérer meubles, écrans et étagères"},
-    {t:"Ranger télécommandes, plaids, déco"},
-    {t:"Tester TV + Wi-Fi (laisser le code en évidence)", video:"Connexion Wi-Fi & box", videoUrl:"wifi.mp4"},
-    {t:"Sols : aspirateur puis serpillière"},
-  ]},
+  { id:"entree",   icon:"door-open",  name:"Entrée & couloir",        photo:"entree.jpg",
+    tasks:[
+      {t:"Récupérer les clés / vérifier le boîtier à code", cle:true},
+      {t:"Vider et désinfecter la poubelle"},
+      {t:"Aspirateur puis serpillière"},
+      {t:"Dépoussiérer surfaces, interrupteurs, poignées"},
+    ]},
+  { id:"cuisine",  icon:"utensils",   name:"Cuisine",                 photo:"cuisine.jpg",
+    tasks:[
+      {t:"Vider le frigo, jeter les restes, nettoyer l'intérieur"},
+      {t:"Nettoyer plaques, four et micro-ondes", video:"Dégraisser les plaques", videoUrl:"plaques.mp4"},
+      {t:"Laver, sécher et ranger toute la vaisselle"},
+      {t:"Désinfecter plans de travail et évier"},
+      {t:"Vérifier consommables (café, sel, huile, éponges)"},
+      {t:"Lancer / vider le lave-vaisselle"},
+      {t:"Sortir les poubelles et remettre un sac propre"},
+    ]},
+  { id:"sdb",      icon:"droplets",   name:"Salle de bain & WC",      photo:"sdb.jpg",
+    tasks:[
+      {t:"Désinfecter WC (cuvette, abattant, sol autour)"},
+      {t:"Nettoyer douche/baignoire — anti-calcaire"},
+      {t:"Lavabo, robinetterie et miroir sans traces"},
+      {t:"Vérifier l'absence de cheveux partout", note:"Point n°1 des mauvais avis voyageurs"},
+      {t:"Serviettes propres pliées + tapis de bain"},
+      {t:"Remplir savon, gel douche, papier toilette"},
+    ]},
+  { id:"chambre",  icon:"bed",        name:"Chambre(s)",              photo:"chambre.jpg",
+    tasks:[
+      {t:"Retirer le linge sale (compter dans l'onglet Linge)"},
+      {t:"Draps & taies propres, lit fait « comme à l'hôtel »", video:"Faire un lit impeccable", videoUrl:"lit.mp4"},
+      {t:"Dépoussiérer tables de nuit, lampes, cadres"},
+      {t:"Vérifier sous le lit et dans les placards (oublis voyageurs)"},
+      {t:"Aérer 10 min puis aspirateur"},
+    ]},
+  { id:"terrasse", icon:"leaf",       name:"Terrasses & bar extérieur", photo:"terrasse.jpg",
+    tasks:[
+      {t:"Brosser la terrasse de devant"},
+      {t:"Brosser la terrasse sous le porche"},
+      {t:"Brosser la terrasse face cuisine"},
+      {t:"Remettre les transats en place", video:"Disposition des transats", videoUrl:"transats.mp4"},
+      {t:"Ranger le bar — vérifier le frigo"},
+      {t:"Nettoyer le comptoir du bar"},
+    ]},
+  { id:"salon",    icon:"sofa",       name:"Salon & pièces de vie",   photo:"salon.jpg",
+    tasks:[
+      {t:"Aspirer canapé, coussins et dessous"},
+      {t:"Dépoussiérer meubles, écrans et étagères"},
+      {t:"Ranger télécommandes, plaids, déco"},
+      {t:"Tester TV + Wi-Fi (laisser le code en évidence)", video:"Connexion Wi-Fi & box", videoUrl:"wifi.mp4"},
+      {t:"Sols : aspirateur puis serpillière"},
+    ]},
 ];
 
 const LINEN = [
-  "Draps (housses)",
-  "Taies d'oreiller",
-  "Housses de couette",
-  "Serviettes bain",
-  "Serviettes mains",
-  "Tapis de bain",
-  "Torchons cuisine",
+  "Draps (housses)", "Taies d'oreiller", "Housses de couette",
+  "Serviettes bain", "Serviettes mains", "Tapis de bain", "Torchons cuisine",
 ];
 
 const INVENTORY = [
@@ -382,183 +397,181 @@ const SKEY = "menage_airbnb_v1";
 let state = {tasks:{}, linen:{}, inv:{}, problems:[], final:{}, lastReset:null};
 
 function load(){
-  try{
-    const raw = localStorage.getItem(SKEY);
-    if(raw){ state = {...state, ...JSON.parse(raw)}; }
-  }catch(e){}
+  try{ const r=localStorage.getItem(SKEY); if(r){state={...state,...JSON.parse(r)};} }catch(e){}
 }
-
 let saveTimer;
 function save(){
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(()=>{
+  saveTimer=setTimeout(()=>{
     try{
-      localStorage.setItem(SKEY, JSON.stringify(state));
-      const s = document.getElementById('saving');
-      s.classList.add('show');
-      setTimeout(()=>s.classList.remove('show'), 1200);
+      localStorage.setItem(SKEY,JSON.stringify(state));
+      const s=document.getElementById('saving');
+      s.classList.add('show'); setTimeout(()=>s.classList.remove('show'),1400);
     }catch(e){}
-  }, 400);
+  },400);
 }
 
 /* ============================================================
-   UTILITAIRE — résoudre une URL média
-   Accepte : nom de fichier local ("plaques.mp4") ou URL complète
+   UTILITAIRES MÉDIAS
    ============================================================ */
 function mediaUrl(src, folder){
   if(!src) return null;
   if(src.startsWith('http')) return src;
-  return folder + '/' + src;
+  return folder+'/'+src;
 }
+function isYoutube(url){ return url&&(url.includes('youtube.com')||url.includes('youtu.be')); }
+function youtubeEmbed(url){ return url.replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/'); }
 
-function isYoutube(url){
-  return url && (url.includes('youtube.com') || url.includes('youtu.be'));
+/* ============================================================
+   ICÔNE LUCIDE inline (pour le HTML dynamique)
+   ============================================================ */
+function ico(name, opts={}){
+  const size = opts.size||18;
+  const cls  = opts.cls||'';
+  return `<i data-lucide="${name}" style="width:${size}px;height:${size}px" class="${cls}"></i>`;
 }
-
-function youtubeEmbed(url){
-  return url.replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
-}
+function refresh(){ lucide.createIcons(); }
 
 /* ============================================================
    RENDU — PIÈCES
    ============================================================ */
 function renderRooms(){
-  const wrap = document.getElementById('rooms');
-  wrap.innerHTML = "";
-
+  const wrap=document.getElementById('rooms'); wrap.innerHTML='';
   ROOMS.forEach(room=>{
-    const total   = room.tasks.length;
-    const done    = room.tasks.filter((_,i)=>state.tasks[room.id+"_"+i]).length;
-    const pct     = Math.round(done/total*100);
-    const allDone = done === total;
-    const photoSrc = mediaUrl(room.photo, 'photos');
+    const total=room.tasks.length;
+    const done=room.tasks.filter((_,i)=>state.tasks[room.id+'_'+i]).length;
+    const pct=Math.round(done/total*100);
+    const allDone=done===total;
+    const photoSrc=mediaUrl(room.photo,'photos');
 
-    const el = document.createElement('div');
-    el.className = "room" + (done>0 && !allDone ? " open" : "");
-
-    const photoHtml = photoSrc ? `
+    const photoHtml=photoSrc?`
       <div class="room-photo-wrap">
-        <img class="room-photo" src="${photoSrc}" alt="État attendu — ${room.name}"
-             loading="lazy"
+        <img class="room-photo" src="${photoSrc}" alt="État attendu — ${room.name}" loading="lazy"
              onclick="event.stopPropagation();openPhoto('${photoSrc}','${room.name} — état attendu')"
              onerror="this.parentNode.style.display='none'">
-        <span class="photo-label">📸 état attendu</span>
-      </div>` : '';
+        <span class="photo-label">${ico('camera',{size:12})} état attendu</span>
+      </div>`:'';
 
-    el.innerHTML = `
+    const el=document.createElement('div');
+    el.className='room'+(done>0&&!allDone?' open':'');
+    el.innerHTML=`
       <div class="room-head" onclick="this.parentNode.classList.toggle('open')">
-        <div class="room-ico">${room.icon}</div>
+        <div class="room-ico">${ico(room.icon,{size:22})}</div>
         <div class="room-meta">
           <h3>${room.name}</h3>
-          <div class="room-sub">${done}/${total} tâches${allDone?' · ✓ terminée':''}</div>
+          <div class="room-sub">${done}/${total} tâches${allDone?' · terminée':''}</div>
           <div class="mini-bar"><i style="width:${pct}%"></i></div>
         </div>
-        <div class="chev">▶</div>
+        <div class="chev">${ico('chevron-right',{size:16})}</div>
       </div>
       <div class="room-body">
         ${photoHtml}
         <div class="room-inner">
           <div class="room-actions">
             <button class="btn-sm" onclick="event.stopPropagation();checkAll('${room.id}',${done<total})">
-              ${done<total ? '✓ Tout cocher' : '↺ Tout décocher'}
+              ${done<total
+                ? ico('check-check',{size:13})+' Tout cocher'
+                : ico('rotate-ccw',{size:13})+' Tout décocher'}
             </button>
           </div>
           ${room.tasks.map((tk,i)=>{
-            const k = room.id+"_"+i, on = state.tasks[k];
-            const vUrl = tk.videoUrl ? mediaUrl(tk.videoUrl, 'videos') : null;
+            const k=room.id+'_'+i, on=state.tasks[k];
+            const vUrl=tk.videoUrl?mediaUrl(tk.videoUrl,'videos'):null;
             return `<div class="task ${on?'done':''}">
-              <div class="check" onclick="toggleTask('${k}')">
-                <svg viewBox="0 0 24 24"><polyline points="4 13 9 18 20 5"/></svg>
-              </div>
+              <div class="check" onclick="toggleTask('${k}')">${ico('check',{size:14})}</div>
               <div class="task-txt">${tk.t}
-                ${tk.cle   ? '<span class="tag cle">🔑 clé</span>' : ''}
-                ${tk.video ? `<span class="tag video" onclick="event.stopPropagation();openVideo('${vUrl||''}','${tk.video}')">▶ vidéo</span>` : ''}
-                ${tk.note  ? `<div class="note">⚠ ${tk.note}</div>` : ''}
+                ${tk.cle  ?`<span class="tag cle">${ico('key',{size:11})} clé</span>`:''}
+                ${tk.video?`<span class="tag video" onclick="event.stopPropagation();openVideo('${vUrl||''}','${tk.video}')">${ico('play',{size:11})} vidéo</span>`:''}
+                ${tk.note ?`<div class="note">${ico('alert-circle',{size:13})} ${tk.note}</div>`:''}
               </div>
             </div>`;
-          }).join("")}
+          }).join('')}
         </div>
       </div>`;
     wrap.appendChild(el);
   });
   updateGlobal();
+  refresh();
 }
 
 function toggleTask(k){ state.tasks[k]=!state.tasks[k]; save(); renderRooms(); }
 
-function checkAll(roomId, check){
-  const room = ROOMS.find(r=>r.id===roomId);
-  if(!room) return;
-  room.tasks.forEach((_,i)=>{ state.tasks[roomId+"_"+i]=check; });
+function checkAll(roomId,check){
+  const room=ROOMS.find(r=>r.id===roomId); if(!room)return;
+  room.tasks.forEach((_,i)=>{state.tasks[roomId+'_'+i]=check;});
   save(); renderRooms();
 }
 
 function updateGlobal(){
-  let total=0, done=0;
-  ROOMS.forEach(r=>r.tasks.forEach((_,i)=>{ total++; if(state.tasks[r.id+"_"+i])done++; }));
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById('gBar').style.width = pct+"%";
-  document.getElementById('gPct').textContent  = pct;
-  const rem = total-done;
-  const dot = document.getElementById('dotMenage');
-  dot.textContent   = rem;
-  dot.style.display = rem ? 'grid' : 'none';
+  let total=0,done=0;
+  ROOMS.forEach(r=>r.tasks.forEach((_,i)=>{total++;if(state.tasks[r.id+'_'+i])done++;}));
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('gBar').style.width=pct+'%';
+  document.getElementById('gPct').textContent=pct;
+  const rem=total-done;
+  const dot=document.getElementById('dotMenage');
+  dot.textContent=rem; dot.style.display=rem?'grid':'none';
 
-  const stamp = document.getElementById('lastStamp');
-  stamp.innerHTML = state.lastReset
-    ? `<div class="stamp"><strong>Dernier ménage terminé</strong>${state.lastReset}</div>`
-    : '';
+  const stamp=document.getElementById('lastStamp');
+  stamp.innerHTML=state.lastReset
+    ?`<div class="stamp">${ico('clock',{size:18})}<div><strong>Dernier ménage terminé</strong>${state.lastReset}</div></div>`
+    :'';
 }
 
 /* ============================================================
    RENDU — LINGE
    ============================================================ */
 function renderLinen(){
-  const g = document.getElementById('linenGrid');
-  g.innerHTML = `
-    <div class="linen-head">Article</div>
+  const g=document.getElementById('linenGrid');
+  g.innerHTML=`<div class="linen-head">Article</div>
     <div class="linen-head" style="text-align:center">Sortie</div>
     <div class="linen-head" style="text-align:center">Entrée</div>`;
   LINEN.forEach((name,i)=>{
-    const o=state.linen["o"+i]||0, e=state.linen["e"+i]||0;
+    const o=state.linen['o'+i]||0,e=state.linen['e'+i]||0;
     g.innerHTML+=`
       <div>${name}</div>
       <div style="text-align:center"><div class="stepper" style="display:inline-flex">
-        <button onclick="linen(${i},'o',-1)">−</button><span>${o}</span><button onclick="linen(${i},'o',1)">＋</button>
+        <button onclick="linen(${i},'o',-1)">${ico('minus',{size:16})}</button>
+        <span>${o}</span>
+        <button onclick="linen(${i},'o',1)">${ico('plus',{size:16})}</button>
       </div></div>
       <div style="text-align:center"><div class="stepper" style="display:inline-flex">
-        <button onclick="linen(${i},'e',-1)">−</button><span>${e}</span><button onclick="linen(${i},'e',1)">＋</button>
+        <button onclick="linen(${i},'e',-1)">${ico('minus',{size:16})}</button>
+        <span>${e}</span>
+        <button onclick="linen(${i},'e',1)">${ico('plus',{size:16})}</button>
       </div></div>`;
   });
+  refresh();
 }
-function linen(i,t,d){ const k=t+i; state.linen[k]=Math.max(0,(state.linen[k]||0)+d); save(); renderLinen(); }
+function linen(i,t,d){const k=t+i;state.linen[k]=Math.max(0,(state.linen[k]||0)+d);save();renderLinen();}
 
 /* ============================================================
    RENDU — INVENTAIRE
    ============================================================ */
 function renderInv(){
-  const wrap = document.getElementById('invList');
-  wrap.innerHTML = "";
+  const wrap=document.getElementById('invList'); wrap.innerHTML='';
   INVENTORY.forEach((it,i)=>{
-    const q   = state.inv[i]!==undefined ? state.inv[i] : it.start;
-    const low = q<=it.min;
+    const q=state.inv[i]!==undefined?state.inv[i]:it.start;
+    const low=q<=it.min;
     wrap.innerHTML+=`
       <div class="inv-row">
-        <div class="name">${it.n} ${low?'<span class="badge-low">· à racheter</span>':''}
+        <div class="name">${it.n}${low?` <span class="badge-low">· à racheter</span>`:''}
           <small>${it.u==='check'?'présence à vérifier':'reste '+q+' '+it.u+' · seuil '+it.min}</small>
         </div>
-        <div class="stepper ${low?'restock':''}">
-          <button onclick="inv(${i},-1)">−</button><span>${q}</span><button onclick="inv(${i},1)">＋</button>
+        <div class="stepper${low?' restock':''}">
+          <button onclick="inv(${i},-1)">${ico('minus',{size:16})}</button>
+          <span>${q}</span>
+          <button onclick="inv(${i},1)">${ico('plus',{size:16})}</button>
         </div>
       </div>`;
   });
+  refresh();
 }
-function inv(i,d){ const cur=state.inv[i]!==undefined?state.inv[i]:INVENTORY[i].start; state.inv[i]=Math.max(0,cur+d); save(); renderInv(); }
-
+function inv(i,d){const c=state.inv[i]!==undefined?state.inv[i]:INVENTORY[i].start;state.inv[i]=Math.max(0,c+d);save();renderInv();}
 function copyShop(){
-  const list = INVENTORY.filter((it,i)=>{ const q=state.inv[i]!==undefined?state.inv[i]:it.start; return q<=it.min; }).map(it=>"• "+it.n);
-  const txt  = list.length ? ("Liste de courses :\n"+list.join("\n")) : "Rien à racheter pour l'instant 🎉";
-  if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>alert("Liste copiée !\n\n"+txt)).catch(()=>alert(txt)); }
+  const list=INVENTORY.filter((it,i)=>{const q=state.inv[i]!==undefined?state.inv[i]:it.start;return q<=it.min;}).map(it=>'• '+it.n);
+  const txt=list.length?('Liste de courses :\n'+list.join('\n')):'Rien à racheter pour l\'instant';
+  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>alert('Liste copiée !\n\n'+txt)).catch(()=>alert(txt));}
   else alert(txt);
 }
 
@@ -566,36 +579,43 @@ function copyShop(){
    RENDU — PROBLÈMES
    ============================================================ */
 function renderProblems(){
-  const wrap = document.getElementById('probList');
+  const wrap=document.getElementById('probList');
   if(!state.problems.length){
     wrap.innerHTML='<div class="empty">Aucun problème signalé.</div>';
   } else {
     wrap.innerHTML=state.problems.map((p,i)=>`
-      <div class="prob ${p.fixed?'fixed':''}">
+      <div class="prob${p.fixed?' fixed':''}">
         <b>${p.title}</b>${p.desc?'<div style="font-size:13px;margin-top:3px">'+p.desc+'</div>':''}
         <div class="meta">
           <span>${p.date}</span>
           <span>
-            <a onclick="toggleFix(${i})" style="cursor:pointer;color:var(--moss);font-weight:700">${p.fixed?'↺ rouvrir':'✓ résolu'}</a>
+            <a onclick="toggleFix(${i})" style="color:var(--moss)">
+              ${ico(p.fixed?'rotate-ccw':'check',{size:13})} ${p.fixed?'rouvrir':'résolu'}
+            </a>
             &nbsp;·&nbsp;
-            <a onclick="delProblem(${i})" style="cursor:pointer;font-weight:700;color:var(--terra)">✕</a>
+            <a onclick="delProblem(${i})" style="color:var(--terra)">
+              ${ico('trash-2',{size:13})}
+            </a>
           </span>
         </div>
-      </div>`).join("");
+      </div>`).join('');
   }
   const open=state.problems.filter(p=>!p.fixed).length;
   const dot=document.getElementById('dotProb');
   dot.textContent=open; dot.style.display=open?'grid':'none';
+  refresh();
 }
 function addProblem(){
   const t=document.getElementById('probTitle').value.trim(); if(!t)return;
   const d=document.getElementById('probDesc').value.trim();
-  state.problems.unshift({title:t,desc:d,fixed:false,date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})});
-  document.getElementById('probTitle').value=""; document.getElementById('probDesc').value="";
+  state.problems.unshift({title:t,desc:d,fixed:false,
+    date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})});
+  document.getElementById('probTitle').value='';
+  document.getElementById('probDesc').value='';
   save(); renderProblems();
 }
-function toggleFix(i){ state.problems[i].fixed=!state.problems[i].fixed; save(); renderProblems(); }
-function delProblem(i){ state.problems.splice(i,1); save(); renderProblems(); }
+function toggleFix(i){state.problems[i].fixed=!state.problems[i].fixed;save();renderProblems();}
+function delProblem(i){state.problems.splice(i,1);save();renderProblems();}
 
 /* ============================================================
    RENDU — CHECK FINAL
@@ -606,44 +626,40 @@ function renderFinal(){
     const on=state.final[i];
     return `<div class="final-item">
       <div class="check" style="${on?'background:var(--moss);border-color:var(--moss)':''}" onclick="toggleFinal(${i})">
-        <svg viewBox="0 0 24 24" style="opacity:${on?1:0}"><polyline points="4 13 9 18 20 5"/></svg>
+        ${ico('check',{size:14})}
       </div>
       <span style="${on?'color:var(--muted);text-decoration:line-through':''}">${f}</span>
     </div>`;
-  }).join("");
+  }).join('');
+  refresh();
 }
-function toggleFinal(i){ state.final[i]=!state.final[i]; save(); renderFinal(); }
+function toggleFinal(i){state.final[i]=!state.final[i];save();renderFinal();}
 
 /* ============================================================
-   MODALE — PHOTO
+   MODALES
    ============================================================ */
-function openPhoto(src, title){
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalMedia').innerHTML = `<img src="${src}" alt="${title}" style="width:100%;max-height:70vh;object-fit:contain;display:block;background:#000">`;
+function openPhoto(src,title){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalMedia').innerHTML=`<img src="${src}" alt="${title}">`;
   document.getElementById('modal').classList.add('open');
 }
-
-/* ============================================================
-   MODALE — VIDÉO
-   ============================================================ */
-function openVideo(url, title){
-  document.getElementById('modalTitle').textContent = title;
-  const media = document.getElementById('modalMedia');
-
+function openVideo(url,title){
+  document.getElementById('modalTitle').textContent=title;
+  const media=document.getElementById('modalMedia');
   if(!url){
-    media.innerHTML = `<div class="placeholder"><div>
-      <div class="play">▶</div>
-      <div style="font-weight:700">${title}</div>
-      <div style="font-size:12px;opacity:.6;margin-top:6px">Vidéo à venir — déposez le fichier dans le dossier /videos/</div>
+    media.innerHTML=`<div class="placeholder"><div>
+      <div class="play-ring">${ico('play',{size:28})}</div>
+      <div style="font-weight:700;font-size:16px">${title}</div>
+      <div style="font-size:12px;opacity:.55;margin-top:8px">Vidéo à venir — déposez le fichier dans /videos/</div>
     </div></div>`;
   } else if(isYoutube(url)){
-    media.innerHTML = `<div class="vid-wrap"><iframe src="${youtubeEmbed(url)}" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>`;
+    media.innerHTML=`<div class="vid-wrap"><iframe src="${youtubeEmbed(url)}" allowfullscreen allow="autoplay;encrypted-media"></iframe></div>`;
   } else {
-    media.innerHTML = `<video controls autoplay playsinline src="${url}">Votre navigateur ne supporte pas la lecture vidéo.</video>`;
+    media.innerHTML=`<video controls autoplay playsinline src="${url}">Navigateur non compatible.</video>`;
   }
   document.getElementById('modal').classList.add('open');
+  refresh();
 }
-
 function closeModal(){
   document.getElementById('modal').classList.remove('open');
   document.getElementById('modalMedia').innerHTML='';
@@ -652,7 +668,7 @@ function closeModal(){
 /* ============================================================
    TABS
    ============================================================ */
-document.getElementById('tabs').addEventListener('click', e=>{
+document.getElementById('tabs').addEventListener('click',e=>{
   const t=e.target.closest('.tab'); if(!t)return;
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
@@ -665,8 +681,8 @@ document.getElementById('tabs').addEventListener('click', e=>{
    RÉINITIALISATION
    ============================================================ */
 function resetAll(){
-  if(!confirm("Réinitialiser pour le prochain voyageur ?\n\nTâches, linge et check final seront remis à zéro.\nLe stock et les problèmes sont conservés.")) return;
-  state.lastReset = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+  if(!confirm('Réinitialiser pour le prochain voyageur ?\n\nTâches, linge et check final seront remis à zéro.\nLe stock et les problèmes sont conservés.'))return;
+  state.lastReset=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
   state.tasks={}; state.linen={}; state.final={};
   save(); renderRooms(); renderLinen(); renderFinal();
 }
@@ -675,27 +691,27 @@ function resetAll(){
    PWA
    ============================================================ */
 let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e=>{
+window.addEventListener('beforeinstallprompt',e=>{
   e.preventDefault(); deferredPrompt=e;
   document.getElementById('installBanner').style.display='flex';
+  refresh();
 });
-document.getElementById('installBtn').addEventListener('click', async()=>{
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt=null;
+document.getElementById('installBtn').addEventListener('click',async()=>{
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt(); await deferredPrompt.userChoice;
+  deferredPrompt=null; document.getElementById('installBanner').style.display='none';
+});
+document.getElementById('closeBanner').addEventListener('click',()=>{
   document.getElementById('installBanner').style.display='none';
 });
-document.getElementById('closeBanner').addEventListener('click', ()=>{
-  document.getElementById('installBanner').style.display='none';
-});
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 
 /* ============================================================
    INIT
    ============================================================ */
 load();
 renderRooms(); renderLinen(); renderInv(); renderProblems(); renderFinal();
+refresh();
 </script>
 </body>
 </html>
