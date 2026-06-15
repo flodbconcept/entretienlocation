@@ -247,9 +247,15 @@
   /* =====================================================
      LINGE
      ===================================================== */
-  .linen-grid{display:grid;grid-template-columns:1fr auto auto;gap:0 8px;align-items:center}
-  .linen-grid > div{padding:12px 0;border-top:1px solid var(--line)}
-  .linen-head{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;border-top:none !important;padding-bottom:6px !important}
+  .linen-item{padding:14px 0;border-top:1px solid var(--line)}
+  .linen-item:first-child{border-top:none}
+  .linen-name{font-size:15px;font-weight:500;margin-bottom:10px}
+  .linen-counters{display:flex;gap:10px}
+  .linen-counter{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .linen-counter-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700}
+  .linen-counter .stepper{width:100%;justify-content:space-between}
+  .linen-counter .stepper button{width:42px;height:42px;border-radius:10px;flex-shrink:0}
+  .linen-counter .stepper span{flex:1;text-align:center;font-size:20px;font-weight:700}
 
   /* =====================================================
      STEPPERS (linge + stock) — touch-friendly 44px
@@ -790,23 +796,31 @@ function updateGlobal(){
    ============================================================ */
 function renderLinen(){
   const g=document.getElementById('linenGrid');
-  g.innerHTML=`<div class="linen-head">Article</div>
-    <div class="linen-head" style="text-align:center">Sortie</div>
-    <div class="linen-head" style="text-align:center">Entrée</div>`;
+  g.innerHTML='';
   LINEN.forEach((name,i)=>{
     const o=state.linen['o'+i]||0,e=state.linen['e'+i]||0;
     g.innerHTML+=`
-      <div style="font-size:14px">${name}</div>
-      <div style="text-align:center"><div class="stepper" style="display:inline-flex">
-        <button onclick="linen(${i},'o',-1)">${ico('minus',17)}</button>
-        <span>${o}</span>
-        <button onclick="linen(${i},'o',1)">${ico('plus',17)}</button>
-      </div></div>
-      <div style="text-align:center"><div class="stepper" style="display:inline-flex">
-        <button onclick="linen(${i},'e',-1)">${ico('minus',17)}</button>
-        <span>${e}</span>
-        <button onclick="linen(${i},'e',1)">${ico('plus',17)}</button>
-      </div></div>`;
+      <div class="linen-item">
+        <div class="linen-name">${name}</div>
+        <div class="linen-counters">
+          <div class="linen-counter">
+            <div class="linen-counter-label">Sortie</div>
+            <div class="stepper">
+              <button onclick="linen(${i},'o',-1)">${ico('minus',17)}</button>
+              <span>${o}</span>
+              <button onclick="linen(${i},'o',1)">${ico('plus',17)}</button>
+            </div>
+          </div>
+          <div class="linen-counter">
+            <div class="linen-counter-label">Entrée</div>
+            <div class="stepper">
+              <button onclick="linen(${i},'e',-1)">${ico('minus',17)}</button>
+              <span>${e}</span>
+              <button onclick="linen(${i},'e',1)">${ico('plus',17)}</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
   });
   refresh();
 }
